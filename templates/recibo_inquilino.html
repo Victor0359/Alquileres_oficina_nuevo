@@ -1,0 +1,160 @@
+{% extends 'principal.html' %}
+{% block titulo %}
+  recibo_inquilino
+{% endblock %}
+{% block contenido %}
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+          <br />
+          <div class="card">
+            <div class="card-header">
+              <h2 class="text-center pt-1 titulos">RECIBO INQUILINO</h2>
+            </div>
+            <div class="card-body">
+           
+                <form action="/recibo_inquilino", method="POST" >
+                        <div class="row g-3">
+                            <form class="row g-3">
+  
+ 
+                            <div class="row g-3">
+                              <div class="col-md">
+                                <div class="mb-3">
+                                <label for="inquilino" class="form-label">INQUILINO</label>
+                                <input type="text" disabled="true" value="{{Inquilinos[0][1]}}" class="form-control" name="inquilino" id="inquilino" aria-describedby="helpId" placeholder="" />
+                                </div>
+                            <div class="col-md">
+                              <div class="mb-3">
+                              <label for="recibo" class="form-label">Numero de recibo</label>
+                              <input type="text" disabled="true" value="{{Recibo}}" class="form-control" name="num_recibo" id="num_recibo" aria-describedby="helpId" placeholder="" />
+                              </div>
+                            </div>
+                              <div class="col-md"></div>
+                            
+                            <div class="col-md">
+                              <div class="mb-3">
+                              <label for="fecha" class="form-label">Fecha</label>
+                              <input type="text" disabled="true" value="{{Fecha}}" class="form-control" name="fecha" id="fecha" aria-describedby="helpId" placeholder="" />
+                              </div>
+                            </div>
+                            </div>
+                            
+                            <div class="row g-3">
+                               <div class="col-sm-6 col-md-6">
+                                  <div class="mb-2" >
+                                  <label for="direccion" class="form-label">Direccion</label>
+                                  <input type="text" disabled="true"  value="{{Direccion[0][1]}}" class="form-control" name="direccion" id="direccion" aria-describedby="helpId" placeholder="" />
+                                  </div>
+                               </div>  
+                               <div class="col-sm-6 col-md-2 "></div>
+                               <div class="col-sm-6 col-md-4 ">
+                                  <div class="mb-2">
+                                  <label for="mes_de_pago"  class="form-label">Mes de Contrato</label>
+                                  <input type="text" disabled="true" value="{{Cuota[0]}}" class="form-control" name="mes" id="mes_de_pago" aria-describedby="helpId" placeholder="" />
+                                  </div>
+                                </div>
+                              </div>    
+                               
+                              <div class="row g-3">
+                                <div class="col-sm-6 col-md-4 ">  
+                                <div class="mb-2">
+                                  <label for="mensualidad" class="form-label text-wrap">{{Mensualidad1}}</label>
+                                  <input type="text" disabled="true" value="{{Mensualidad}}" class="form-control" name="mensualidad" id="mensualidad" aria-describedby="helpId" placeholder="" /> 
+                                </div>
+                                </div>
+                                
+                                
+                                <div class="row g-3 ">
+                                <div class="col-sm-6 col-md-4 ">  
+                                <div class="mb-2">
+                                     <label for="abl" class="form-label">Abl</label>
+                                     <input type="text" disabled="true" value="{{Servicios[0]}}"class="form-control" name="abl" id="abl" aria-describedby="helpId" placeholder="" />
+                                  </div>
+                                      </div>
+                                  
+                                  </div>    
+                                  <div class="row g-3 ">
+                                    <div class="col-sm-6 col-md-4 ">  
+                                    <div class="mb-2">
+                                      <label for="aysa" class="form-label">Aysa</label>   
+                                      <input type="text" disabled="true" value="{{Servicios[1]}}" class="form-control" name="aysa" id="aysa" aria-describedby="helpId" placeholder="" />
+                                        
+                                      </div>
+                                          </div>
+                                      
+                                      </div>    
+                                      <div class="row g-3">
+                                        <div class="col-sm-6 col-md-4 ">  
+                                        <div class="mb-2">
+                                          <label for="exp_comunes" class="form-label">Expensas comunes</label>
+                                          <input type="text" disabled="true" value="{{Servicios[2]}}" class="form-control" name="exp_comunes" id="exp_comunes" aria-describedby="helpId" placeholder="" /> 
+                                        </div>
+                                        </div>
+                                         
+                                     
+                                       <div class="row g-3">
+                                        <div class="col-sm-6 col-md-4 ">  
+                                        <div class="mb-2">
+                                          <label for="seguro" class="form-label">Seguro</label>
+                                          <input type="text" disabled="true" value="{{Servicios[4]}}" class="form-control" name="seguro" id="seguro" aria-describedby="helpId" placeholder="" />
+                                         
+                                        </div>
+                                        </div>
+                                       </div>    
+                                                                      
+                                   
+                                       <div class="row g-3">
+                                        <div class="col-sm-6 col-md-4 ">  
+                                        <div class="mb-2">
+                                        <label for="varios" class="form-label">Varios</label>
+                                          <input type="text"  class="form-control" value="{{varios}}" name="varios" id="varios" aria-describedby="helpId" placeholder="" />
+                                                                                 
+                                        </div>
+                                        </div>
+                                       </div>        
+                                      
+                                       <div class="container text-center">
+                                        <div class="row align-items-start">
+                                          <div class="col-4">
+                                              <label for="s_anterior" class="form-label">Saldo servicios</label>
+                                                <input type="text" disable="true" value="{{Saldo_anterior_servicios}}" class="form-control" name="s_anterior" id="s_anterior" aria-describedby="helpId" placeholder="" />
+                                          </div>
+                                          
+                                          <div class="container text-center">
+                                            <div class="row align-items-start">
+                                              <div class="col-4">
+                                                  <label for="s_anterior" class="form-label">Saldo mensualidad</label>
+                                                    <input type="text" disable="true" value="{{Saldo_anterior_mensualidad}}" class="form-control" name="s_anterior" id="s_anterior" aria-describedby="helpId" placeholder="" />
+                                              </div>
+                                          
+                                          <div class="col-4">
+                                             
+                                              <label for="sub_total" class="form-label">Sub Total</label>
+                                                <input type="text" disable="true" value="{{Total}}" class="form-control" name="sub_total" id="sub_total" aria-describedby="helpId" placeholder="" />
+                                          </div>
+                                          <div class="col-4">
+                                            <label for="pago" class="form-label">Pago</label>
+                                                <input type="number"   class="form-control" name="pago" id="pago" aria-describedby="helpId" placeholder="monto a pagar" required />
+                                          </div>
+                                        </div> 
+                                    </div>
+                                </div> 
+                               
+                     
+                        </div>
+                         <button type="submit" class="btn btn-alarm"> guardar</button>
+                      </form>
+                </div>
+            </div>   
+         </div>
+       </div>                
+   </div> 
+      
+</main>
+
+{% endblock %}
+</body>
+</html>

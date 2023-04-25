@@ -1,0 +1,64 @@
+{% extends 'principal.html' %}
+{% block titulo %}
+  impuestos
+{% endblock %}
+{% block contenido %}
+  <div class="container">
+    <br />
+    <br />
+    <br />
+    <a href="guardar_impuesto" class="btn btn-warning titulos">Cargar impuesto</a>
+    <br />
+    <br />
+
+    <form action="{{ url_for('impuesto') }}" >
+      <div class="mb-3">
+        <label for="list" class="form-label">DIRECCION</label>
+        <div class="form-row align-items-center">
+          <div class="col-auto my-1">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Propiedad</label>
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="list">
+              <option>seleccione</option>
+              {% for prop in Propiedades %}
+                <option value="{{ prop[0] }}">{{ prop[1] }}</option>
+              {% endfor %}
+            </select>
+        <button type="submit" class="" placeholder="Seleccione Propiedad"> BUSCAR>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-primary">
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Propiedad</th>
+          <th scope="col">Abl</th>
+          <th scope="col">Aysa</th>
+          <th scope="col">Exp_comunes</th>
+          <th scope="col">Exp_extraordinarias</th>
+          <th scope="col">Seguro</th>
+          <th scope="col">Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prop in Impuestos %}
+          <tr class="">
+            <td>{{ prop[0] }}</td>
+            <td>{{ prop[1] }}</td>
+            <td>{{ prop[2] }}</td>
+            <td>{{ prop[3] }}</td>
+            <td>{{ prop[4] }}</td>
+            <td>{{ prop[5] }}</td>
+            <td>{{ prop[6] }}</td>
+            <td>{{ prop[7] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% endblock %}

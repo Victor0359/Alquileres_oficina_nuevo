@@ -1,0 +1,886 @@
+#!usr/bin/env python
+# -*- coding: utf-8 -*-
+import json
+from flask import Flask, request, render_template, redirect,  url_for,flash
+import datetime
+import propiedades_contralor
+import propietarios_contralor
+import inquilinos_contralor
+import impuestos_control
+import listas
+import contratos_control
+import recibos_control 
+import calendar
+import contralor_escritos
+import numeros_a_letras 
+from decimal import *
+import recibos_control_prop 
+from flask_restful import Resource, Api
+import meses
+import loguin
+from formularios import Formularios
+
+app = Flask(__name__)
+api=Api(app)
+app.secret_key= 'Victor9865'
+
+
+recibo1 = {}
+
+@app.route("/", methods=["POST","GET"])
+def log():
+    form= Formularios()
+    if request.method=="POST":
+         nombre=request.form [ 'nombre' ]
+         usuario=request.form['password']
+         login= loguin.loguin(nombre,usuario)
+         if login is None:
+             succes_message=("El usuario o la contraseña no son correctos")
+             flash(succes_message)
+             return redirect(url_for('log'))
+         else:
+            
+            return render_template ("principal.html")    
+    else:
+            return render_template("loguin.html",form=form)
+
+
+@app.route("/1")
+def index():
+    return render_template("principal.html")
+
+
+
+@app.route("/guardar_propiedad", methods=["POST","GET"])
+def guardar_propiedad():
+    if request.method=="POST":
+        direccion = request.form["txtDireccion"].title()
+        localidad = request.form["txtLocalidad"].title()
+        propietario = int(request.form["prop"])
+        fecha = request.form["fecha"]
+        fecha_dt = datetime.datetime.strptime(fecha, "%Y-%m-%d")
+        propiedades_contralor.insertar_propiedad(direccion, localidad, propietario,fecha_dt)
+        return redirect (url_for('guardar_propiedad'))
+    else: 
+        propietario=listas.lista_propietarios()
+        
+        return render_template("guardar_propiedad.html", Propietario=propietario)
+
+
+
+
+@app.route("/propiedades")
+def propiedades():
+    direccion = request.args.get("dir")
+    propiedades = propiedades_contralor.obtener_propiedad(direccion)
+    busqueda = listas.lista_propietarios()
+   
+    return render_template(
+        "propiedades.html", Propiedades=propiedades, Busqueda=busqueda
+    )
+
+
+@app.route("/eliminar_propiedad", methods=["POST"])
+def eliminar_propiedad():
+    propiedades_contralor.eliminar_propiedad(int(request.form["id"]))
+    return redirect("/propiedades")
+
+
+@app.route("/editar_propiedad/<int:id>")
+def editar_propiedad(id):
+    propiedad = propiedades_contralor.obtener_propiedad_por_id(id)
+    
+    return render_template("editar_propiedad.html", Propiedad=propiedad)
+
+
+@app.route("/actualizar_propiedad", methods=["POST"])
+def actualizar_propiedad():
+    id = int(request.form["id"])
+    direccion = request.form["direccion"].title()
+    localidad = request.form["localidad"].title()
+    propietario = int(request.form["propietario"])
+
+    propiedades_contralor.actualizar_propiedad(direccion, localidad, propietario, id)
+
+    return redirect("/propiedades")
+
+    # ------------------------------------------- propietarios-------------------------------------------!
+
+
+@app.route("/guardar_propietario")
+def guardar1():
+    return render_template("guardar_propietario.html")
+
+
+@app.route("/guardar_propietario", methods=["POST"])
+def guardar_propietario():
+
+    nombre = request.form["nombre"].title()
+    apellido = request.form["apellido"].title()
+    dni = request.form["dni"]
+    cuit = request.form["cuit"].title()
+    direccion = request.form["direccion"].title()
+    telefono = request.form["telefono"]
+    celular = request.form["celular"]
+    correo_electronico = request.form["correo_electronico"]
+    fecha = request.form["fecha"]
+    fecha_dt = datetime.datetime.strptime(fecha, "%Y-%m-%d")
+    propietarios_contralor.insertar_propietario(
+        nombre,
+        apellido,
+        dni,
+        cuit,
+        direccion,
+        telefono,
+        celular,
+        correo_electronico,
+        fecha_dt,
+    )
+    return redirect('/propietario')
+
+
+@app.route("/propietario")
+def propietario():
+    apellido = request.args.get("apellido")
+    propietario = propietarios_contralor.obtener_propietario(apellido)
+    return render_template("propietarios.html", Propietario=propietario)
+
+
+@app.route("/eliminar_propietario", methods=["POST"])
+def eliminar_propietario():
+    propietarios_contralor.eliminar_propietario(int(request.form["id"]))
+    return redirect("/propietario")
+
+
+@app.route("/editar_propietario/<int:id>")
+def editar_propietario(id):
+    propietario = propietarios_contralor.obtener_propietario_por_id(id)
+    return render_template("editar_propietarios.html", Propietario=propietario)
+
+
+@app.route("/actualizar_propietario", methods=["POST"])
+def actualizar_propietario():
+    id = int(request.form["id"])
+    nombre = request.form["nombre"].title()
+    apellido = request.form["apellido"].title()
+    dni = request.form["dni"]
+    cuit = request.form["cuit"]
+    domicilio = request.form["direccion"].title()
+    te = request.form["telefono"]
+    celular = request.form["celular"]
+    correo_electronico = request.form["correo_electronico"]
+
+    propietarios_contralor.actualizar_propietario(
+        nombre,
+        apellido,
+        dni,
+        cuit,
+        domicilio,
+        te,
+        celular,
+        correo_electronico,
+        id,
+    )
+
+    return redirect("/propietario")
+
+
+# ---------------------------------------------------------inquilinos------------------------------------------------------------
+@app.route("/guardar_inquilino")
+def guardar3():
+    return render_template("guardar_inquilinos.html")
+
+
+@app.route("/guardar_inquilino", methods=["POST"])
+def guardar_inquilino():
+
+    nombre = request.form["nombre"].title()
+    apellido = request.form["apellido"].title()
+    dni = request.form["dni"]
+    cuit = request.form["cuit"]
+    direccion = request.form["direccion"].title()
+    telefono = request.form["telefono"]
+    celular = request.form["celular"]
+    correo_electronico = request.form["correo_electronico"]
+    fecha = request.form["fecha"]
+    fecha_dt = datetime.datetime.strptime(fecha, "%Y-%m-%d")
+    inquilinos_contralor.insertar_inquilino(
+        nombre,
+        apellido,
+        dni,
+        cuit,
+        direccion,
+        telefono,
+        celular,
+        correo_electronico,
+        fecha_dt,
+    )
+    return redirect("/inquilino")
+
+
+@app.route("/inquilino")
+def inquilino():
+    apellido = request.args.get("apellido")
+    inquilino = inquilinos_contralor.obtener_inquilino(apellido)
+    return render_template("inquilinos.html", Inquilinos=inquilino)
+
+
+@app.route("/eliminar_inquilino", methods=["POST"])
+def eliminar_inquilino():
+    inquilinos_contralor.eliminar_inquilino(int(request.form["id"]))
+    return redirect("/inquilino")
+
+
+@app.route("/editar_inquilino/<int:id>")
+def editar_inquilino(id):
+    inquilino = inquilinos_contralor.obtener_inquilino_por_id(id)
+    return render_template("editar_inquilinos.html", Inquilinos=inquilino)
+
+
+@app.route("/actualizar_inquilino", methods=["POST"])
+def actualizar_inquilino():
+    id = int(request.form["id"])
+    nombre = request.form["nombre"].title()
+    apellido = request.form["apellido"].title()
+    dni = request.form["dni"]
+    cuit = request.form["cuit"]
+    domicilio = request.form["direccion"].title()
+    telefono = request.form["telefono"]
+    celular = request.form["celular"]
+    correo_electronico = request.form["correo_electronico"]
+    
+    inquilinos_contralor.actualizar_inquilino(
+        nombre,
+        apellido,
+        dni,
+        cuit,
+        domicilio,
+        telefono,
+        celular,
+        correo_electronico,
+        
+        id,
+    )
+
+    return redirect("/inquilino")
+
+    # ------------------------------------------------------ impuestos-------------------------------------------------------------------- @app.route('/guardar_inquilino')
+
+
+@app.route("/guardar_impuesto")
+def guardar4():
+    propiedades = listas.lista_propiedades()
+
+    return render_template("guardar_impuestos.html", Propiedades=propiedades)
+
+
+@app.route("/guardar_impuesto", methods=["POST"])
+def guardar_impuesto():
+
+    id_propiedades = int(request.form["list"])
+    abl = int(request.form["abl"])
+    aysa = int(request.form["aysa"])
+    exp_comunes = int(request.form["exp_comunes"])
+    exp_extraordinarias = int(request.form["exp_extraordinarias"])
+    seguro = int(request.form["seguro"])
+    fecha = request.form["fecha"]
+    fecha_dt = datetime.datetime.strptime(fecha, "%Y-%m-%d")
+    impuestos_control.insertar_impuestos(
+        id_propiedades, abl, aysa, exp_comunes, exp_extraordinarias, seguro, fecha_dt
+    )
+    return redirect(url_for('guardar_impuesto'))
+
+
+@app.route("/impuesto")
+def impuesto():
+    propiedad = request.args.get("list")
+    impuesto = impuestos_control.obtener_impuesto(propiedad)
+    propiedades = listas.lista_propiedades()
+
+    return render_template(
+        "impuestos.html", Impuestos=impuesto, Propiedades=propiedades
+    )
+
+
+# --------------------------------------------------------contratos---------------------------------------------------
+@app.route("/guardar_contrato")
+def guardar6():
+    propiedades = listas.lista_propiedades()
+    inquilinos = listas.lista_inquilinos()
+    propietarios = listas.lista_propietarios()
+    return render_template(
+        "guardar_contratos.html",
+        Propiedades=propiedades,
+        Propietarios=propietarios,
+        Inquilinos=inquilinos,
+    )
+
+
+@app.route("/guardar_contrato", methods=["POST"])
+def guardar_contrato():
+    if request.method=="POST":
+        
+       id_propiedades = int(request.form["propiedades"])
+       id_propietarios = int(request.form["propietarios"])
+       id_inquilinos = int(request.form["inquilinos"])
+       fecha = request.form["fecha"]
+       fecha_inicio = datetime.datetime.strptime(fecha, "%Y-%m-%d")
+       duracion_contrato= int(request.form["duracion"])
+       precio_inicial = int(request.form["precio"])
+       precio_6meses = int(request.form["precio6"])
+       precio_12meses = int(request.form["precio12"])
+       precio_18meses = int(request.form["precio18"])
+       precio_24meses = int(request.form["precio24"])
+       precio_30meses = int(request.form["precio30"])
+       honorarios = float(request.form["honorarios"])
+    contratos_control.insertar_contrato(
+        id_propietarios,
+        id_inquilinos,
+        id_propiedades,
+        fecha_inicio,
+        duracion_contrato,
+        precio_inicial,
+        precio_6meses,
+        precio_12meses,
+        precio_18meses,
+        precio_24meses,
+        precio_30meses,
+        honorarios,
+    )
+    return redirect("/guardar_contrato")
+
+
+@app.route("/contrato")
+def contrato():
+    
+    prop = request.args.get("list")
+    contrato = list(contratos_control.obtener_contrato(prop))
+    propiedades = listas.lista_propiedades_propietario()
+    
+    return render_template("contratos.html", Contrato=contrato, Propiedades=propiedades)
+
+
+@app.route("/eliminar_contrato", methods=["POST"])
+def eliminar_contrato():
+    contratos_control.eliminar_contrato(request.form["id"])
+ 
+    return redirect("/contrato")
+
+
+@app.route("/editar_contrato/<int:id>")
+def editar_contrato(id):
+    
+    contratos = contratos_control.obtener_contrato_por_id(id)
+   
+    return render_template("editar_contratos.html", Contratos=contratos)
+
+
+@app.route("/actualizar_contrato", methods=["POST"])
+def actualizar_contrato():
+   
+        id = int(request.form["id"])
+        id_propiedades = int(request.form["propiedad"])
+        id_propietarios = int(request.form["propietario"])
+        id_inquilinos = int(request.form["inquilino"])
+        fecha = request.form["fecha"]
+        fecha_inicio = datetime.datetime.strptime(fecha, "%Y-%m-%d")
+        duracion_contrato= int(request.form["duracion"])
+        precio_inicial = int(request.form["precio_ini"])
+        precio_6meses = int(request.form["precio_6"])
+        precio_12meses = int(request.form["precio_12"])
+        precio_18meses = int(request.form["precio_18"])
+        precio_24meses = int(request.form["precio_24"])
+        precio_30meses = int(request.form["precio_30"])
+        honorarios = float(request.form["honorarios"])
+
+        contratos_control.actualizar_contrato(
+        id_propietarios,
+        id_inquilinos,
+        id_propiedades,
+        fecha_inicio,
+        duracion_contrato,
+        precio_inicial,
+        precio_6meses,
+        precio_12meses,
+        precio_18meses,
+        precio_24meses,
+        precio_30meses,
+        honorarios,
+        id,
+    )
+
+        return redirect("/contrato")
+
+
+# ----------------------------------------recibo_alquiler inquilino----------------------------------------------------------
+@app.route("/recibo_inquilinos1", methods=["POST", "GET"])
+def recibo():
+
+    if request.method == "POST":
+        id = int(request.form["inquilino"])
+        varios = int(request.form["varios"])
+    
+        return redirect(url_for("recibo_inquilino", id=id, varios=varios))
+    else:
+        inquilinos = listas.lista_inquilinos_contratos()
+     
+        return render_template("recibo_inquilinos1.html", inquilinos=inquilinos)
+
+
+@app.route('/recibo_inquilino/<id>/<varios>')
+def recibo_inquilino(id, varios):
+    id=int(id)
+    fecha = None
+    saldo = None
+    mensualidad1=None
+    mensualidad=[]
+    saldo_anterior_servicios=None
+    saldo_anterior_mensualidad=None
+    recibo = recibos_control.Num_recibo()
+    inquilinos = listas.lista_inquilinos1(id)
+    direccion= recibos_control.direccion(id)
+    cuota = recibos_control.Cuotas(id)
+    fecha = datetime.datetime.now()
+    fecha1=recibos_control.formato_fecha(fecha)
+    rango1=int(datetime.datetime.today().month)
+    
+    if recibos_control.locura(id) is not None:
+       
+        mensualidad = recibos_control.locura(id)
+       
+    servicios = recibos_control.Servicios(id)
+    if mensualidad1 is None:
+       mensualidad1 = meses.meses(id)
+       print(mensualidad1)
+    if recibos_control.saldo_anterior(id) is not None: 
+        
+        saldo=recibos_control.saldo_anterior(id)
+        saldo_anterior_servicios=saldo[0][0]
+        saldo_anterior_mensualidad=saldo[0][1]
+    
+    
+    total=int( int(mensualidad) + int(servicios[0]) +int(servicios[1])+ int(servicios[2])+ int(servicios[4])+
+              int(saldo_anterior_servicios)+int(saldo_anterior_mensualidad) +int(varios))
+    
+     
+        
+    jrecibo1 = {
+            "recibo": str(recibo),
+            "meses_adeudados":str(mensualidad1),
+            "mensualidad": str(mensualidad),
+            "inquilinos": inquilinos[0][0],
+            "direccion": direccion[0][0],
+            "cuota": cuota[0],
+            "fecha": datetime.datetime.now().strftime("%d/%m/%yyyy"),
+            "abl": str(servicios[0]),
+            "aysa": str(servicios[1]),
+            "exp_comunes": str(servicios[2]),
+            "seguros": str(servicios[4]),
+            "varios": int(varios),
+            "saldo_ant_mensualidad": str(saldo_anterior_servicios),
+            "saldo_ant_servicios": str(saldo_anterior_mensualidad),
+            "total": str(total),}
+          
+            
+    with open("guardar_inq.json","w") as contenido:
+      json.dump(jrecibo1,contenido)
+                          
+    return render_template(
+              "recibo_inquilino.html",
+              Mensualidad1=mensualidad1,
+              Recibo=recibo,
+              Inquilinos=inquilinos,
+              Cuota=cuota,
+              Direccion=direccion,
+              Fecha=fecha1,
+              Mensualidad=mensualidad,
+              Servicios=servicios,
+              Saldo_anterior_mensualidad=saldo_anterior_mensualidad,
+              Saldo_anterior_servicios= saldo_anterior_servicios,
+              Total=total,
+              varios=varios,
+              )
+    
+               
+
+
+@ app.route ('/recibo_inquilino', methods=["POST"])    
+
+
+def recibo_guardar():
+    try:
+            mensualidad=0
+            
+            saldo_ant_mensualidad=0
+            saldo_ant_servicios=0
+            saldo_pendiente_mensualidad=0
+            saldo_pendiente_servicios=0
+            pago=0
+            with open('guardar_inq.json', 'r') as contenido:
+               datos= json.load(contenido)
+               recibo= datos['recibo']
+               id_inquilino=int(datos['inquilinos'])
+               id_propiedad=int(datos['direccion'])
+               fecha1=datos['fecha']
+               fecha=datetime.datetime.strptime(fecha1, "%d/%m/%yyyy")
+               mes_contrat=datos['cuota']
+               str_mes=datos['meses_adeudados']
+               Meses_Adeudados=int(datos['mensualidad'])
+               abl=int(datos['abl'])
+               aysa=int(datos['aysa'])
+               exp_comunes=int(datos['exp_comunes'])
+               seguros=int(datos['seguros'])
+               varios=int(datos['varios'])
+               saldo_ant_mensualidad= int(datos['saldo_ant_mensualidad'])
+               saldo_ant_servicios: int(datos['saldo_ant_servicios'])
+               total=int(datos['total'])
+               
+            if request.method=="POST":
+                  pago=int(request.form["pago"])   
+           
+            #if saldo_pendiente_mensualidad and saldo_pendiente_servicios is None: 
+            if pago < (saldo_ant_mensualidad+Meses_Adeudados):
+                     saldo_pendiente_mensualidad=(saldo_ant_mensualidad+Meses_Adeudados)-pago
+                     saldo_pendiente_servicios=abl+aysa+exp_comunes+seguros+varios
+            elif pago> (saldo_ant_mensualidad+Meses_Adeudados):
+                     saldo_pendiente_servicios=(abl+aysa+exp_comunes+seguros+varios+Meses_Adeudados)-pago
+                     saldo_pendiente_mensualidad=0 
+            
+             
+            
+            recibos_control.guardar_recibo(recibo,id_inquilino,id_propiedad,fecha,mes_contrat,
+                            str_mes,Meses_Adeudados,abl,aysa,exp_comunes,seguros,varios,total,
+                            pago, saldo_pendiente_servicios, saldo_pendiente_mensualidad)           
+    
+    
+    except ValueError as valores:
+             print(valores)           
+           
+    return redirect(url_for("recibo"))
+# ---------------------------------------------------- escritos inquilinos -----------------------------------------
+
+@ app.route ('/ver_recibo_inquilinos')
+ 
+def ver_recibo_inquilino(): 
+     
+     
+       apellido = request.args.get ("apellido")
+       escrito = contralor_escritos.escrito_inq(apellido)
+       ids=None
+       for i in escrito:
+           ids=i[0]
+       
+           print(ids)      
+          
+       return render_template ('ver_recibo_inquilino.html', Escritos=escrito, ids=ids)
+       
+          
+        
+@ app.route("/recibo_escrito/<ids>")
+def recibo_escrito(ids):
+    ids= int(ids)
+    escritos=contralor_escritos.escrito_inq2(ids)
+    letras=None
+    fecha1=None
+    mes1=None
+    ano=None
+    mes=None
+    ultimo_dia=None
+    anos=None
+    numero=None
+    formato_ultimo_dia_mes=None
+   
+    
+    for i in escritos:
+        fecha=i[6]
+        fecha1=  recibos_control.formato_fecha(fecha)
+        mes1= datetime.datetime.strftime(i[6],'%m')
+        ano= datetime.datetime.strftime(i[6],'%y')
+        mes=recibos_control.formato_fecha_mes(int(mes1))
+        ultimo_dia= calendar.monthrange(int(ano),int(mes1))[1]
+        anos= datetime.datetime.strftime(i[6],'%Y')
+        numero = i[17]
+        formato_ultimo_dia_mes= recibos_control.formato_fecha_vencimiento(i[6])
+        letras= numeros_a_letras.numero_a_letras(numero)
+    
+    
+    return render_template ("escrito_inq.html", Escrito=escritos, Letras=letras, Fecha=fecha1, Mes=mes, 
+                            Ultimo_dia=ultimo_dia, Formato=formato_ultimo_dia_mes,Anos=anos)
+      
+# ------------------------------------- RECIBO PROPIETARIO ----------------------------------------------------- 
+@app.route("/recibo_propietario", methods=["POST", "GET"])
+def recibo_propietario():
+
+    if request.method == "POST":
+        id = int(request.form["propietario"])
+        return redirect(url_for('recibo_propietario1', id=id))
+    
+    else:
+        propietario = listas.lista_propietarios()
+     
+        return render_template('recibo_propietarios1.html', propietario=propietario)
+
+                
+@app.route ("/recibo_propietario1/<int:id>", methods=["POST", "GET"]) 
+def recibo_propietario1(id):
+       
+       if request.method == "POST":
+          id_prop = request.form["propiedad"]
+          valores=request.form["varios"]
+          
+          return redirect(url_for('recibo1', id=id_prop, valores=valores))
+       
+       else:
+           propiedad = listas.lista_propiedades_por_propietario(id)
+     
+       return render_template('recibos_propietarios2.html', propiedad=propiedad)
+
+@app.route ("/recibo1/<id>/<valores>/", methods=["GET","POST"])    
+def recibo1(id,valores):  
+        id=id
+        varios= valores
+        rec_prop={}
+        rec=recibos_control_prop.suma_pagos_rec_inq(id)
+        honor=int(rec['honorarios'])   
+        meses= int(rec['meses']) 
+        honorarios= int(meses*(honor/100)) 
+        rec["honorarios"]=honorarios
+      
+           
+    
+        return render_template('recibo_propietario.html',prop=rec, varios=varios)    
+        
+            
+@app.route("/recibo2", methods=["POST"])
+def recibo2(): 
+    abl1=None
+    aysa1=None
+    seg1=None
+    
+    if request.method=="POST":
+        abl1=request.form.get("chekabl")
+        aysa1= request.form.get("chekaysa")
+        seg1=request.form.get("chekseguro")
+    if abl1 is None:
+        abl1=0
+    if aysa1 is None:
+        aysa1=0
+    if seg1 is None:
+        seg1=0
+    
+    return redirect(url_for('recibo3',abl1=abl1, aysa1=aysa1, seg1=seg1))
+
+@app.route('/recibo2/<abl1>/<aysa1>/<seg1>')
+def recibo3(abl1,aysa1,seg1):
+    abl1=abl1
+    aysa1= aysa1
+    seg1=seg1
+    abl=None
+    aysa=None
+    seg=0
+    
+    saldo=None
+    
+    with open('recibo_prop1.json','r') as cont:
+        reci=json.load(cont)
+        print(reci)
+    
+    mensualidad = reci["meses"]  
+    if abl1 =='1':
+          abl=reci["abl"]
+       
+    elif abl1 =='0':
+          abl=0
+         
+    if aysa1 =='1':
+          aysa=reci["aysa"]
+       
+    elif aysa1 =='0':
+          aysa=0
+          
+    if seg1 =='1':
+        seg=reci['seguros']
+          
+    elif seg1 =='0':
+        seg=0
+    
+           
+    hono= reci["honorarios"]
+          
+    honorarios= int(mensualidad * int(hono)/100)
+    
+    saldo= mensualidad + int(reci['valores'])+ abl + aysa + seg + int(reci['exp_ext'])- honorarios  
+    
+   
+    
+    id_prop= recibos_control_prop.id_propietario(reci['id_propiedad'])
+   
+    recibo={'apellido':reci['apellido'],'direccion':reci['direccion'],
+            'cuotameses':reci['cuotameses'],'meses':reci['meses'], 'abl':
+             abl, 'aysa':aysa, 'seguros':seg, 'honorarios': honorarios,
+             'numeroRecibo':reci['numeroRecibo'], 'exp_ext':reci['exp_ext'],
+             'fecha1':reci['fecha1'],'valores':reci['valores'], 'saldo':saldo,'id_propiedad':
+             reci['id_propiedad'], 'id_propietario':id_prop[0]}
+    
+    with open ('recibo_prop2.json','w') as rec:
+        r=json.dump (recibo, rec)
+    
+    return render_template("recibo_propietario_final.html",registro=recibo )
+          
+@ app.route('/guardar_recibo_prop', methods=["POST"])
+def guardar():
+    pago=None
+    guardar1=[]
+    if request.method=="POST":
+        pago= request.form["pago"]
+        with open ('recibo_prop2.json','r') as reci:
+            reci= json.load(reci)
+           
+            fecha1=datetime.datetime.now().isoformat()
+            
+        guardar_prop= {'num_recibo': int(reci['numeroRecibo']),'id_propietario':
+        int(reci['id_propietario']),'id_propiedad': int(reci['id_propiedad']),
+        'fecha':fecha1, 'mes_contrato': int(reci['cuotameses']),
+        'abl': int(reci['abl']), 'aysa':int(reci['aysa']),'exp_extraor': int(reci['exp_ext']),'seguros': int(reci['seguros']),
+        'varios':int(reci['valores']), 'monto_mensual': int(reci['meses']),'honorarios':int(reci['honorarios']),
+        'total':int(reci['saldo']), 'pago':int(pago),
+        }
+        with open ('guardar_propietario.json','w') as guar:
+            gu=json.dump(guardar_prop,guar)  
+        
+        with open('guardar_propietario.json','r') as re:
+            re=json.load(re)
+            
+        guardar=re.values()
+        guardar=list(guardar)
+        print(guardar)   
+                
+        g= recibos_control_prop.guardar_rec_prop(guardar)  
+                
+        
+        
+    return redirect(url_for('recibo_propietario'))    
+        
+            
+    """with open('recibo_prop2.json','w') as re:
+        re= json.dump(re)
+    
+        
+        ret=recibos_control_prop.guardar_rec_prop()
+    return redirect(url_for('recibo_propietario'))"""
+    
+    """    return redirect (url_for ("recibo1"))   
+   else: 
+     with open('guardar_prop.json', 'r') as contenido:
+           jrecibo3= json.load(contenido) 
+    
+
+     return render_template ("recibo_propietario_final.html", jrecibo3=jrecibo3)  
+   
+                       
+            
+   return render_template("recibo_propietario.html",jrecibo2=jrecibo2)      
+       
+    rango1=int(datetime.datetime.today().month)
+    
+       mensualidad = recibos_control.locura(id)
+       print(mensualidad)
+       servicios = recibos_control.Servicios(id)
+       print(servicios)
+       if recibos_control.mensualidad1(id) is None:
+         mensualidad1 = "Mensualidad"
+       else:
+         mensualidad1 = recibos_control.mensualidad1(id)
+       
+       saldo = recibos_control.saldo_anterior(id)
+       print(saldo)  
+        
+       saldo_total=( 
+        mensualidad
+        + servicios[0]
+        + servicios[1]
+        + servicios[2]
+        + servicios[4]
+        + saldo[0]
+        + int(varios))
+        
+          
+        
+    jrecibo2 = {
+            "mensualidad": mensualidad,
+            "inquilinos": propiedades[0][0],
+            "recibo": recibo,
+            "cuota": cuota[0],
+            "direccion": direccion[0][0],
+            "fecha": datetime.datetime.now().strftime("%d/%m/%y"),
+            "abl": servicios[0],
+            "aysa": servicios[1],
+            "exp_comunes": servicios[2],
+            "seguros": servicios[4],
+            "varios": int(varios),
+            "saldo": saldo,
+            "saldo_total": saldo_total,}
+          
+            
+            with open("guardar_prop.json","w") as contenido:
+            json.dump(jrecibo2,contenido)
+                          
+        
+              
+
+  Mensualidad1=mensualidad1,
+              Recibo=recibo,
+              Propiedades=propiedades,
+              Cuota=cuota,
+              Propiedad=propiedad,
+              Fecha=fecha1)
+Mensualidad=mensualidad,
+                 Servicios=servicios,
+                 Saldo=saldo,
+                 Saldo_total=saldo_total,
+                 varios=varios
+                
+
+               
+
+
+@ app.route ('/recibo_propietario', methods=["POST"])    
+
+
+def recibo_guardar():
+        try:
+            mensualidad=0
+            saldo_pendiente=None
+            pago=None
+            with open('guardar_inq.json', 'r') as contenido:
+               datos= json.load(contenido)
+               inq=int(datos['inquilinos'])
+               propiedades=datos['direccion']
+               fecha1=datos['fecha']
+               fecha=datetime.datetime.strptime(fecha1, "%d/%m/%y")
+               cuota=datos['cuota']
+               mensualidad=datos['mensualidad']
+               abl=datos['abl']
+               aysa=datos['aysa']
+               exp_com=datos['exp_comunes']
+               seguro=datos['seguros']
+               varios=datos['varios']
+               saldo_ant=datos['saldo']
+               total_general=int(datos['saldo_total'])
+               
+            if request.method=="POST":
+                  pago=int(request.form["pago"])    
+            saldo_pendiente=total_general-pago  
+            
+            recibos_control.guardar_recibo(inq,propiedades,fecha,cuota,mensualidad,abl,aysa,exp_com,\
+               seguro,varios,saldo_ant,total_general,saldo_pendiente,pago)
+              
+        except ValueError as valores:
+             print(valores)           
+           
+        return redirect(url_for("recibo")) """                    
+
+
+if __name__ == "__main__":
+
+    app.run(debug=True)

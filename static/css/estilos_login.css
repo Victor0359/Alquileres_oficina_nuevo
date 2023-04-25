@@ -1,0 +1,27 @@
+body{
+    background: rgb(121, 17, 17)
+    
+}
+.form{
+ text-align: left;
+ color: white;
+
+}
+
+label{
+
+    color:white;
+}
+#boton{
+    font-size: 30px;
+    text-align: center;
+    background-color: rgb(95, 95, 138);
+    color: white;
+    padding-bottom: 2px;
+    margin: auto;
+    
+    
+}
+#error{
+    color: red;
+}

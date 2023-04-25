@@ -1,0 +1,72 @@
+{% extends 'principal.html' %}
+{% block titulo %}
+ ver recibo inquilino
+{% endblock %}
+{% block contenido %}
+<div class="container">
+    <br />
+    <br />
+    <br />
+        <form action="{{ url_for('ver_recibo_inquilino') }} ">
+          
+            <input type="text" name="apellido" id="apellido" plasholder="Apellido" />
+            <button class="btn btn-warning" type="submit">Buscar por apellido</button>
+          </form>
+      
+      
+   <div >
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">id_recibo</th>
+          <th scope="col">inquilino</th>
+          <th scope="col">propiedad</th>
+          <th scope="col">localidad</th>
+          <th scope="col">cuota</th>
+          <th scope="col">fecha</th>
+          <th scope="col">mensualidad</th>
+          <th scope="col">abl</th>
+          <th scope="col">aysa</th>
+          <th scope="col">exp_ord</th>
+          <th scope="col">seguros</th>
+          <th scope="col">varios</th>
+          <th scope="col">s_ser</th>
+          <th scope="col">s_men</th>
+          <th scope="col">total</th>
+          <th scope="col"> pagado</th>
+          <th scope="col">RECIBO ESCRITO</th> 
+        </tr>
+      </thead>
+     {% for prop in Escritos %}
+      <tbody> 
+        
+         <tr class="">
+          
+            <td>{{ prop[1] }}</td>
+            <td>{{ prop[2] }}</td>
+            <td>{{ prop[3] }}</td>
+            <td>{{ prop[4] }}</td>
+            <td>{{ prop[5] }}</td>
+            <td>{{ prop[6] }}</td>
+            <td>{{ prop[7] }}</td>
+            <td>{{ prop[8] }}</td>
+            <td>{{ prop[9] }}</td>
+            <td>{{ prop[10] }}</td>
+            <td>{{ prop[11] }}</td>
+            <td>{{ prop[12] }}</td>
+            <td>{{ prop[13] }}</td> 
+            <td>{{ prop[14] }}</td>
+            <td>{{ prop[15] }}</td>
+            <td>{{ prop[16] }}</td>
+            
+            <td>
+           
+           
+           <a href=" {{ url_for ('recibo_escrito', ids=prop[1]) }}  "  class="btn btn-success" placeholder="recibo_escrito"onclick="">Recibo </a> 
+             
+             
+            </td>    
+            {% endfor %}
+          
+         
+{% endblock%}

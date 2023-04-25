@@ -1,0 +1,64 @@
+{% extends 'principal.html' %}
+{% block titulo %}
+  editar inquilinos
+{% endblock %}
+{% block contenido %}
+  <main>
+    <div class="contenedor">
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <div class="card-header">INQUILINOS</div>
+          <div class="card-body">
+            <form action="{{ url_for('actualizar_inquilino') }}" method="post">
+              <div class="mb-3">
+                <input type="hidden" name="id" value="{{ Inquilinos[0] }}" />
+               
+              </div>
+              <div class="mb-3">
+                <label for="nombre">NOMBRE</label>
+                <input value="{{ Inquilinos[1] }}" required type="text" class="input" name="nombre" placeholder="nombre" id="nombre" />
+              </div>
+              <div class="mb-3">
+                <label for="apellido">APELLIDO</label>
+                <input value="{{ Inquilinos[2] }}" required type="text" class="input" name="apellido" placeholder="apellido" id="apellido" />
+              </div>
+              <div class="mb-3">
+                <label for="dni" class="form-label">DNI</label>
+                <input value="{{ Inquilinos[3] }}" required type="text" class="input" name="dni" placeholder="dni" id="dni" />
+              </div>
+              <div class="mb-3">
+                <label for="cuit" class="form-label">CUIT</label>
+                <input value="{{ Inquilinos[4] }}" required type="text" class="input" name="cuit" placeholder="cuit" id="cuit" />
+              </div>
+              <div class="mb-3">
+                <label for="direccion" class="form-label">DIRECCION</label>
+                <input value="{{ Inquilinos[5] }}" required type="text" class="input" name="direccion" placeholder="direccion" id="direccion" />
+              </div>
+              <div class="mb-3">
+                <label for="telefono" class="form-label">TELEFONO</label>
+                <input value="{{ Inquilinos[6] }}" required type="text" class="input" name="telefono" placeholder="telefono" id="telefono" />
+              </div>
+              <div class="mb-3">
+                <label for="celular" class="form-label">CELULAR</label>
+                <input value="{{ Inquilinos[7] }}" required type="text" class="input" name="celular" placeholder="celular" id="celular" />
+              </div>
+              <div class="mb-3">
+                <label for="correo_electronico" class="form-label">CORREO ELECTRONICO</label>
+                <input value="{{ Inquilinos[8] }}" required type="text" class="input" name="correo_electronico" placeholder="correo_electronico" id="correo_electronico" />
+              </div>
+              
+              <div class="mb-3">
+                <button type="submit" class="btn btn-success">Entrar</button>
+              </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div> 
+    
+      <div class="col-md-4"></div>
+     
+    </div>
+  </main>
+{% endblock %}

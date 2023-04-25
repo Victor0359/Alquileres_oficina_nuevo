@@ -1,0 +1,40 @@
+{% extends 'principal.html' %}
+{% block titulo %}
+  recibo_propietario
+{% endblock %}
+{% block contenido %}
+<div class="container">
+   <form action="#" method="POST">
+       <div class="row g-3">
+           <div class="col-md">
+            <div class="mb-3">
+               <div class="form-floating">
+               <select class="form-select" id="floatingSelectGrid" type="submite" aria-label="Floating label select example" name="propiedad">
+               <option selected>Seleccione</option>
+               {% for prop in propiedad %}
+               <option value="{{prop[0]}}">{{prop[1]}}</option>
+               {% endfor %}
+               </select>
+               <label for="floatingSelectGrid">Propiedad</label>
+               </div>
+            </div>
+            <div class="row g-3">
+               <div class="col-md">
+                <div class="mb-3">
+                   <div class="form-floating">
+                   <input type="text" name="varios" required value="0" placeholder="indica si posee gastos varios">
+                   <input type="submit" value="Enviar">
+                   </div>
+                </div>
+               </div>
+            </div>
+          </div>
+   </form>
+
+</div>
+
+
+</main>
+{% endblock %}
+</body>
+</html>

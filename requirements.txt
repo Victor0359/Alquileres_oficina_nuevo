@@ -1,0 +1,15 @@
+flask
+request
+pydobc
+json
+datetime
+calendar
+decimal
+fask_restful
+flask_wtf
+wtforms
+wtforms.validators
+numpy
+functools
+itertools
+os

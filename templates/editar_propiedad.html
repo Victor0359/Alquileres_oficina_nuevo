@@ -1,0 +1,46 @@
+{% extends 'principal.html' %}
+{% block titulo %}
+  editar formulario
+{% endblock %}
+{% block contenido %}
+  <br />
+  <br />
+  <main>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <br />
+          <div class="car">
+            <div class="card-header">
+              <p class="text-md-start">PROPIEDADES</p>
+            </div>
+            <div class="card-body">
+              <form action="{{ url_for('actualizar_propiedad') }}" method="post">
+                <input type="hidden" name="id" value="{{ Propiedad[0] }}" />
+                <div class="mb-3">
+                  <label for="direccion">DIRECCION</label>
+                  <input value="{{ Propiedad[1] }}" required type="text" class="input" name="direccion" placeholder="Direccion" id="direccion" />
+                </div>
+                <div class="mb-3">
+                  <label for="localidad">LOCALIDAD</label>
+                  <input value="{{ Propiedad[2] }}" required type="text" class="input" placeholder="Localidad" id="localidad" name="localidad" />
+                </div>
+                <div class="mb-3">
+                  <label for="propietario">PROPIETARIO</label>
+                  <input value="{{ Propiedad[3] }}" required type="text" class="input" placeholder="Propietario" id="propiedad" name="propietario" />
+                </div>
+                <div class="mb-3">
+                  <button type="submit" class="btn btn-primary">GUARDAR</button>
+                </div>
+                <br />
+                
+              </form>
+            </div>
+            <div class="col-md-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

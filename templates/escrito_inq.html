@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>escrito inquilino</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous" />
+    <link rel="stylesheet"href="{{url_for('static',filename='/css/etilos.css')}}">
+</head>
+
+<body>
+   
+  <div class="container - fluid mt-4">
+    <div class="card">
+      
+      <div class="card-body">
+    <div class="col-md text">
+      <div class="d-flex">
+        <div class="flex-grow-1 ms-3 ">
+          <h5 class="mt-0 text-center">RECIBO INQUILINO</h5>
+         {% for inq in Escrito %}
+         
+          <p class="text-right pl-5"> En Adrogue a los {{ Fecha }}</p>
+          
+          <p class="text-right mt1"> <strong>Cuota {{inq[5]}}</strong></p>
+          <p class="text_midle"> En el día de la fecha recibo del Sr/a {{inq[2]}} la suma de pesos <strong >{{ Letras }}, ($ {{inq[17]}},=)</strong> , correspondientes al mes de {{ inq[7] }} del {{ Anos }}
+           referido a la finca ubicada en la localidad de {{ inq[4] }} con frente a la calle {{inq[3]}} cuyo vencimiento opera el día {{ Ultimo_dia , Formato }}</p>
+          
+        </div>
+      </div>
+      <div class="row align-items-start">
+        <div class="col-3">
+          <label for="inquilino" class="form-label">{{inq[7]}}</label>
+        </div>
+        <div class="col-9 fluid">
+          <label for="inquilino" class="form-label"> $ {{inq[8]}},=</label>
+        </div>
+        <div class="col-3">
+          <label for="inquilino" class="form-label">ABL</label>
+        </div>
+        <div class="col-9 fluid">
+          <label for="inquilino" class="form-label"> $ {{inq[9]}},=</label>
+        </div>
+        <div class="col-3">
+          <label for="inquilino" class="form-label">AYSA</label>
+        </div>
+        <div class="col-9 fluid">
+          <label for="inquilino" class="form-label"> $ {{inq[10]}},=</label>
+        </div>
+        <div class="col-3">
+          <label for="inquilino" class="form-label">EXP_ORDINARIAS</label>
+        </div>
+        <div class="col-9 fluid">
+          <label for="inquilino" class="form-label"> $ {{inq[11]}},=</label>
+        </div>
+        <div class="col-3">
+          <label for="inquilino" class="form-label">SEGURO</label>
+        </div>
+        <div class="col-9 fluid">
+          <label for="inquilino" class="form-label"> $ {{inq[12]}},=</label>
+        </div>
+        <div class="col-3">
+          <label for="inquilino" class="form-label">VARIOS</label>
+        </div>
+        <div class="col-9 fluid">
+          <label for="inquilino" class="form-label"> $ {{inq[13]}},=</label>
+        </div>
+                
+        <div class="col-3">
+          <label for="inquilino" class="form-label">SUB_TOTAL</label>
+        </div>
+        <div class="col-9 fluid">
+          <label for="inquilino" class="form-label text-right"> $ {{inq[16]}},=</label>
+        </div>
+        
+        <div class="col-3">
+          <label for="inquilino" class="form-label"><h4>PAGO </h4></label>
+        </div>
+        <div class="col-9 fluid">
+          <label for="inquilino" class="form-label"><h4> $ {{inq[17]}},=</h4></label>
+        </div>
+        <p class="text_midle"> Quedan pendientes de pago <strong>Saldo Servicios $ {{inq[14]}},= y Saldo de mensualidades anteriores $ {{ inq[15]}},=</strong></p>
+
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <footer>
+    <!-- place footer here -->
+  </footer>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+  <script src= "{{ url_for('static', filename='/js/funcion.js') }}"></script>
+</body>
+</html>

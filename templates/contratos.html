@@ -1,0 +1,95 @@
+{% extends 'principal.html' %}
+{% block titulo %}
+  contratos
+{% endblock %}
+{% block contenido %}
+  <div class="container">
+    <br />
+    <br />
+    <br />
+    <a href="guardar_contrato" class="btn btn-warning titulos">Cargar contratos</a>
+    <br />
+    <br />
+
+    <form action="{{ url_for('contrato') }}" >
+      <div class="mb-3">
+        <label for="propiedad" class="form-label">CONTRATO</label>
+        <div class="form-row align-items-center">
+          <div class="col-auto my-1">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Propiedad</label>
+            
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="list">
+              
+              <option>seleccione</option>
+             {% for sip in Propiedades %}
+                <option value="{{ sip[0] }}">{{ sip[1] }}</option>
+             {% endfor %}
+            </select>
+             
+           <button type="submit" class="" placeholder="Seleccione Propiedad"> BUSCAR
+          
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-primary">
+      <thead>
+        <tr>
+          <th scope="col">id_contratos</th>
+          <th scope="col">propietario</th>
+          <th scope="col">inquilino</th>
+          <th scope="col">propiedad</th>
+          <th scope="col">fecha_inicio</th>
+          <th scope="col">duracion_contrato</th>
+          <th scope="col">precio_inicial</th>
+          <th scope="col">precio_6meses</th>
+          <th scope="col">precio_12meses</th>
+          <th scope="col">precio_18meses</th>
+          <th scope="col">precio_24meses</th>
+          <th scope="col">precio_30meses</th>
+          <th scope="col">honorarios</th>
+          <th scope="col">final_contrato</th>
+          <th scope="col"> Editar</th>
+          <th scope="col">Borrar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prop in Contrato %}
+          <tr class="">
+            <td>{{ prop[0] }}</td>
+            <td>{{ prop[1] }}</td>
+            <td>{{ prop[2] }}</td>
+            <td>{{ prop[3] }}</td>
+            <td>{{ prop[4] }}</td>
+            <td>{{ prop[5] }}</td>
+            <td>{{ prop[6] }}</td>
+            <td>{{ prop[7] }}</td>
+            <td>{{ prop[8] }}</td>
+            <td>{{ prop[9] }}</td>
+            <td>{{ prop[10] }}</td>
+            <td>{{ prop[11] }}</td>
+            <td>{{ prop[12] }}</td>
+            <td>{{ prop[13] }}</td>
+            <td>
+              
+              <a href="{{ url_for('editar_contrato',  id = prop[0]) }} " class="btn btn-warning" onclick="">Editar</a>
+             
+            </td>
+              <td>
+                <form action="{{ url_for('eliminar_contrato') }}" method="post">
+                  <input type="hidden" name="id" value="{{ prop[0][0] }}" />
+                
+                  <button class="btn btn-danger" id="botton1">Eliminar</button>
+               
+               
+                </form>
+              </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% endblock %}

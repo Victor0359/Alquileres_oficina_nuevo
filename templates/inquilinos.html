@@ -1,0 +1,67 @@
+{% extends 'principal.html' %}
+{% block titulo %}
+ inquilinos
+{% endblock %}
+{% block contenido %}
+  <div class="container">
+    <br />
+    <br />
+    <br />
+    <a href={{url_for('guardar_inquilino')}} class="btn btn-warning titulos">Cargar Inquilinos</a>
+    <br />
+    <br />
+    <form action="{{ url_for('inquilino') }}">
+      <input type="text" name="apellido" id="apellido" plasholder="Apellido" />
+      <button class="btn btn-warning">Buscar por apellido</button>
+    </form>
+    <br />
+    <br />
+    <div class="table table-striped">
+      <table class="table table-primary">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">D.N.I.</th>
+            <th scope="col">Cuit</th>
+            <th scope="col">Direccion</th>
+            <th scope="col">Tel</th>
+            <th scope="col">Celular</th>
+            <th scope="col">Correo_elec</th>
+            <th scope="col">fecha</th>
+            <th scope="col">editar</th>
+            <th scope="col">eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for prop in Inquilinos %}
+            <tr class="">
+              <td>{{ prop[0] }}</td>
+              <td>{{ prop[1] }}</td>
+              <td>{{ prop[2] }}</td>
+              <td>{{ prop[3] }}</td>
+              <td>{{ prop[4] }}</td>
+              <td>{{ prop[5] }}</td>
+              <td>{{ prop[6] }}</td>
+              <td>{{ prop[7] }}</td>
+              <td>{{ prop[8] }}</td>
+              <td>{{ prop[9] }}</td>
+              <td>
+                <a href="{{ url_for('editar_inquilino', id = prop[0]) }}" class="btn btn-warning" onclick="">Editar</a>
+              </td>
+              <td>
+                <form action="{{ url_for('eliminar_inquilino') }}" method="post">
+                  <input type="hidden" name="id" value ="{{ prop[0] }}" />
+                  <button class="btn btn-danger" id="botton1">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </div>
+{% endblock %}
