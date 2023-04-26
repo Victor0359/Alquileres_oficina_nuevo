@@ -1,2 +1,7 @@
 flask
-
+pyodbc
+numpy
+flask_wtf
+wtforms
+wtforms.validators
+email_validator
