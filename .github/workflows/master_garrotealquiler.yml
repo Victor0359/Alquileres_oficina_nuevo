@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'garrotealquiler'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_88FEDAA04D574C88B61ABBCD0DCA85C7 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8848B742D74C43D39EC0461D699BC363 }}
