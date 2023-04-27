@@ -21,8 +21,7 @@
                 </div>
                 <br />
                 <div class="mb-3">
-                 
-                 
+                                  
                   <div class="form-row align-items-center">
                     <div class="col-auto my-1">
                       <label class="mr-sm-2" for="inlineFormCustomSelect">Localidad</label>
@@ -63,14 +62,20 @@
                   <br />
                   <div class="d-grid gap-2 col-6 mx-auto">
                     <button class="btn btn-primary" type="submit">ENTRAR</button>
-                    <a href="{{ url_for('index') }}"> <button class=class="btn btn-success">SALIR</a>
                   </div>
                 </div>
               </form>
-              <div class="col-md-4"></div>
+              
             </div>
-            
-          </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+            <a href="{{ url_for('guardar_propiedad') }}"> <button class="btn btn-secondary btn-sm btn-block">CANCELAR</button></a>
+            </div>          
+            <br>
+          
+            <div class="d-grid gap-2 col-6 mx-auto">
+            <a href="{{ url_for('index') }}"> <button  class="btn btn-danger btn-sm btn-block"> SALIR</button></a>
+            </div>
+                  </div>
         </div>
       </div>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>

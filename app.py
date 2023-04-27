@@ -49,6 +49,10 @@ def log():
 def index():
     return render_template("principal.html")
 
+@app.errorhandler(404)
+def page_not_found(error):
+ return render_template("pagina_no_encontrada.html"), 404
+
 
 
 @app.route("/guardar_propiedad", methods=["POST","GET"])

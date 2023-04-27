@@ -10,7 +10,7 @@
         <div class="col-md-4">
           <br />
           <div class="card">
-            <div class="card-header titulos">PROPIETARIOS</div>
+            <div class="card-header titulos text-center"> PROPIETARIOS</div>
             <div class="card-body">
               <form action="{{url_for('guardar_propietario')}}" method="POST">
                 <div class="mb-3">
@@ -34,19 +34,20 @@
                   <input type="date" class="form-control" name="fecha" id="cond_afip" aria-describedby="helpId" placeholder="FECHA" />
                   
                   <br/>
-                  <button type="submit" class="btn btn-success">Entrar</button>
                   
-                 
-                <a href="{{ url_for('index') }}"> <button class=class="btn btn-success">SALIR</a>
-           
+                  
+                                  
                 </div>
                 
               </div>
             </div>
-
-              </div>
+            <button class="btn btn-primary" type="submit">ENTRAR</button>
+              
               </form>
              
+              
+              <a href="{{ url_for('index') }}"> <button class="btn btn-danger">SALIR</button></a>
+             </div>    
           </div>
         </div>
       </div>
