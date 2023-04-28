@@ -78,7 +78,7 @@ def propiedades():
     direccion = request.args.get("dir")
     propiedades = propiedades_contralor.obtener_propiedad(direccion)
     busqueda = listas.lista_propietarios()
-   
+    print(direccion) 
     return render_template(
         "propiedades.html", Propiedades=propiedades, Busqueda=busqueda
     )

@@ -15,42 +15,42 @@
               <form action="{{url_for('guardar_propietario')}}" method="POST">
                 <div class="mb-3">
                   <label for="nombre" class="form-label">NOMBRE</label>
-                  <input type="text" class="form-control" name="nombre" id="nombre" aria-describedby="helpId" placeholder="ESCRIBA EL NOMBRE" />
+                  <input type="text" class="form-control" name="nombre" id="nombre" aria-describedby="helpId" placeholder="ESCRIBA EL NOMBRE" required/>
                   <label for="apellido" class="form-label">APELLIDO</label>
-                  <input type="text" class="form-control" name="apellido" id="apellido" aria-describedby="helpId" placeholder="ESCRIBA EL APELLIDO" />
+                  <input type="text" class="form-control" name="apellido" id="apellido" aria-describedby="helpId" placeholder="ESCRIBA EL APELLIDO" required />
                   <label for="dni" class="form-label">DNI</label>
-                  <input type="text" class="form-control" name="dni" id="dni" aria-describedby="helpId" placeholder="ESCRIBA EL DNI" />
+                  <input type="text" class="form-control" name="dni" id="dni" aria-describedby="helpId" placeholder="ESCRIBA EL DNI" required/>
                   <label for="cuit" class="form-label">CUIT</label>
-                  <input type="text" class="form-control" name="cuit" id="cuit" aria-describedby="helpId" placeholder="ESCRIBA EL CUIT" />                  
+                  <input type="text" class="form-control" name="cuit" id="cuit" aria-describedby="helpId" placeholder="ESCRIBA EL CUIT" required/>                  
                   <label for="direccion" class="form-label">DIRECCION</label>
-                  <input type="text" class="form-control" name="direccion" id="direccion" aria-describedby="helpId" placeholder="ESCRIBA EL DIRECCION" /> 
+                  <input type="text" class="form-control" name="direccion" id="direccion" aria-describedby="helpId" placeholder="ESCRIBA EL DIRECCION" required /> 
                   <label for="telefono" class="form-label">TELEFONO</label>
                   <input type="text" class="form-control" name="telefono" id="telefono" aria-describedby="helpId" placeholder="ESCRIBA EL TELEFONO" /> 
                   <label for="celular" class="form-label">CELULAR</label>
-                  <input type="text" class="form-control" name="celular" id="celular" aria-describedby="helpId" placeholder="ESCRIBA EL CELULAR" /> 
+                  <input type="text" class="form-control" name="celular" id="celular" aria-describedby="helpId" placeholder="ESCRIBA EL CELULAR" required/> 
                   <label for="correo_electronico" class="form-label">CORREO ELECTRONICO</label>
-                  <input type="email" class="form-control" name="correo_electronico" id="correo_electronico" aria-describedby="helpId" placeholder="ESCRIBA EL CORREO ELECTRONICO" /> 
+                  <input type="email" class="form-control" name="correo_electronico" id="correo_electronico" aria-describedby="helpId" placeholder="ESCRIBA EL CORREO ELECTRONICO" required /> 
                   <label for="fecha" class="form-label">FECHA</label>
-                  <input type="date" class="form-control" name="fecha" id="cond_afip" aria-describedby="helpId" placeholder="FECHA" />
-                  
-                  <br/>
-                  
-                  
-                                  
+                  <input type="date" class="form-control" name="fecha" id="cond_afip" aria-describedby="helpId" placeholder="FECHA" required/>
+                                          
                 </div>
                 
-              </div>
-            </div>
-            <button class="btn btn-primary" type="submit">ENTRAR</button>
+               </div>
+           
+                 <button class="btn btn-primary" type="submit">ENTRAR</button>
               
               </form>
-             
+              <br>
+              <div class="mb-3 text-center">
+                <a href="{{ url_for('guardar_propietario') }}"> <button class="btn btn-secondary ">CANCELAR</button></a>
+                <a href="{{ url_for('index') }}"> <button class="btn btn-danger">SALIR</button></a>
+              </div>
               
-              <a href="{{ url_for('index') }}"> <button class="btn btn-danger">SALIR</button></a>
-             </div>    
-          </div>
+              </div>
+            
         </div>
-      </div>
+      </div> 
+    </div>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     </div>
