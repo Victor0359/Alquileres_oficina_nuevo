@@ -20,9 +20,11 @@ Swal.fire ({
 
 	});
 
-	$("#tabla").on('sumite','#for',function(event){
+	
+	$("#tabla").on('click','#3',function(event){
 		event.preventDefault();
-		console.log(event.target);
+		console.log(event.location)
+		console.log(this)
 		
 Swal.fire ({
 		title: 'Deseas modificar el archivo?',
@@ -32,9 +34,16 @@ Swal.fire ({
 		confirmButtonColor: '#3085d6',
 		cancelButtonColor: '#d33',
 		confirmButtonText: 'Si, lo modifico!'
+
+}).then(resultado => {
+	if (resultado.value) {
+		$("#3").submit();
 		
-	  })
+	}
+	else {
+		console.log(" no se pudo ver el resultado");
+	}
 
-	});
-
+});
+});
 });
