@@ -3,14 +3,15 @@
   editar formulario
 {% endblock %}
 {% block contenido %}
-  <main>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>  
+<main>
     <div class="contenedor">
       <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
           <div class="card-header">PROPIETARIOS</div>
           <div class="card-body">
-            <form action="{{ url_for('actualizar_propietario') }}" method="post">
+            <form action="{{ url_for('actualizar_propietario') }}" method="post" id="editar">
             
                 <input type="hidden" name="id" value="{{ Propietario[0] }}" />
                  <div class="mb-3">
@@ -50,7 +51,7 @@
                  
                 <br />
                 <div class="mb-3">
-                <button type="submit" class="btn btn-success">Entrar</button>
+                <button type="submit" class="btn btn-success" id="1" onclick="entrar()">Entrar</button>
                 </div>
               </div>
             </form>
@@ -61,5 +62,10 @@
       <div class="col-md-4"></div>
      
     </div>
+    
+ 
   </main>
+  <script src ="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
+    
 {% endblock %}
