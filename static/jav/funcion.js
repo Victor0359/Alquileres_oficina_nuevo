@@ -7,43 +7,40 @@ Swal.fire ({
 		text: "Exitos!",
 		icon: 'warning',
 		showCancelButton: true,
+		width:'18em',
 		confirmButtonColor: '#3085d6',
 		cancelButtonColor: '#d33',
 		confirmButtonText: 'Si, lo modifico!',
 		preConfirm:()=>{
 			location.href=event.target.href;
 
-		},
-		allouOutsideClick:()=> false,
-		allowEscapeKey:()=> false
+		}
+		
 	  })
 
 	});
 
 	
-	$("#tabla").on('click','#3',function(event){
+	$("#tabla").on('click','#2',function(event){
 		event.preventDefault();
-		console.log(event.location)
-		console.log(this)
-		
+		console.log(event.target.href)		
 Swal.fire ({
-		title: 'Deseas modificar el archivo?',
-		text: "Exitos!",
-		icon: 'warning',
+		title: 'Deseas ELIMINAR el archivo?',
+		text: "Si lo eliminas no hay vuelta atrás!",
+		icon: 'error',
+		iconColor:'red',
+		width:'18em',
 		showCancelButton: true,
 		confirmButtonColor: '#3085d6',
 		cancelButtonColor: '#d33',
-		confirmButtonText: 'Si, lo modifico!'
+		confirmButtonText: 'Si, lo elimino!',
+        preConfirm:()=>{
+	        location.href=event.target.href;
+            }
 
-}).then(resultado => {
-	if (resultado.value) {
-		$("#3").submit();
-		
-	}
-	else {
-		console.log(" no se pudo ver el resultado");
-	}
 
 });
+
+    
 });
 });

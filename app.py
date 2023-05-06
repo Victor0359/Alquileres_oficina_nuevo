@@ -78,15 +78,15 @@ def propiedades():
     direccion = request.args.get("dir")
     propiedades = propiedades_contralor.obtener_propiedad(direccion)
     busqueda = listas.lista_propietarios()
-    print(direccion) 
+    print(busqueda) 
     return render_template(
         "propiedades.html", Propiedades=propiedades, Busqueda=busqueda
     )
 
 
-@app.route("/eliminar_propiedad", methods=["POST"])
-def eliminar_propiedad():
-    propiedades_contralor.eliminar_propiedad(int(request.form["id"]))
+@app.route("/eliminar_propiedad/<int:id>")
+def eliminar_propiedad(id):
+    propiedades_contralor.eliminar_propiedad(id)
     return redirect("/propiedades")
 
 
@@ -150,16 +150,16 @@ def propietario():
     return render_template("propietarios.html", Propietario=propietario)
 
 
-@app.route("/eliminar_propietario", methods=["POST"])
-def eliminar_propietario():
-    propietarios_contralor.eliminar_propietario(int(request.form["id"]))
+@app.route("/eliminar_propietario/<int:id>")
+def eliminar_propietario(id):
+    propietario=propietarios_contralor.eliminar_propietario(id)
     return redirect("/propietario")
 
 
 @app.route("/editar_propietario/<int:id>")
 def editar_propietario(id):
     propietario = propietarios_contralor.obtener_propietario_por_id(id)
-    return render_template("editar_propietarios.html", Propietario=propietario)
+    return render_template("editar_propietarios.html",Propietario=propietario)
 
 
 @app.route("/actualizar_propietario", methods=["POST"])
@@ -229,9 +229,9 @@ def inquilino():
     return render_template("inquilinos.html", Inquilinos=inquilino)
 
 
-@app.route("/eliminar_inquilino", methods=["POST"])
-def eliminar_inquilino():
-    inquilinos_contralor.eliminar_inquilino(int(request.form["id"]))
+@app.route("/eliminar_inquilino/<int:id>")
+def eliminar_inquilino(id):
+    inquilinos_contralor.eliminar_inquilino(id)
     return redirect("/inquilino")
 
 
@@ -364,9 +364,9 @@ def contrato():
     return render_template("contratos.html", Contrato=contrato, Propiedades=propiedades)
 
 
-@app.route("/eliminar_contrato", methods=["POST"])
-def eliminar_contrato():
-    contratos_control.eliminar_contrato(request.form["id"])
+@app.route("/eliminar_contrato/<int:id>")
+def eliminar_contrato(id):
+    contratos_control.eliminar_contrato(id)
  
     return redirect("/contrato")
 

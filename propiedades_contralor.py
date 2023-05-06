@@ -20,7 +20,7 @@ def obtener_propiedad(propietario):
     propiedad = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT id_Propiedades, Dirección, Localidad, propietario, fecha FROM Propiedades WHERE propietario = (?)",
+            "SELECT id_Propiedades, Dirección, Localidad, propietario, fecha FROM Propiedades WHERE propietario = (?)  order by Dirección ",
             (propietario,)
         )
 

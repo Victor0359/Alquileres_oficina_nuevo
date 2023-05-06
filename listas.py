@@ -52,7 +52,7 @@ def lista_propiedades_propietario():
         )
 
         propiedades1 = cursor.fetchall()
-
+        print(propiedades1)
         return propiedades1
 
 
@@ -82,6 +82,21 @@ def lista_propiedades_por_propiedad(id):
         propiedad = cursor.fetchall()
 
         return propiedad
+    
+def lista_propiedades_por_nombre_propiedad(propiedad):
+    cursor = conec_sql.connection().cursor()
+    propiedad = None
+    with conec_sql.connection().cursor() as cursor:
+        cursor.execute(
+            "SELECT Id_Propiedades,Dirección,localidad, concat(propie.Nombre, '' ,propie.Apellido)\
+             as Propietario FROM Propiedades as pro inner join Propietarios as propie on propie.id_Propietario=\
+             pro.propietario WHERE Dirección like('%?%')",
+            (id),
+        )
+
+        propiedad = cursor.fetchall()
+
+        return propiedad 
 
 
 def lista_inquilinos():

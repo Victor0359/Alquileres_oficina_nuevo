@@ -55,7 +55,7 @@ def obtener_contrato_por_id(id):
         )
        
         contrato = cursor.fetchone()
-       
+        print(contrato)
         return contrato
 
 
@@ -63,8 +63,9 @@ def actualizar_contrato (id_propietarios, id_inquilinos,id_propiedades, fecha_in
                          precio_6meses, precio_12meses,precio_18meses, precio_24meses, precio_30meses, honorarios,
                          id_contratos):
 
-    conexion = cursor=conec_sql.connection().cursor()
-    with conexion.cursor() as cursor:
+    
+    cursor=conec_sql.connection().cursor()
+    with conec_sql.connection().cursor() as cursor:
         cursor.execute(
             "UPDATE Contratos1 SET id_Propietarios=(?), id_Inquilinos=(?), id_Propiedades=(?),Fecha_Inicio=(?),duracion_contrato=(?),Precio_Inicial=(?),\
                 Precio_6Meses=(?),Precio_12Meses=(?),Precio_18Meses=(?),Precio_24Meses=(?),Precio_30Meses=(?),honorarios=(?)\

@@ -88,13 +88,17 @@
                   </div>   
 
                   <button type="submit" class="btn btn-success">Entrar</button>
-                  <a href="{{ url_for('index') }}"> <button class=class="btn btn-success">SALIR</a>
+                  
                 </div>
               </form>
               <div class="col-md-4"></div>
             </div>
-           
+            
           </div>
+          <div class="mb-3 ">
+              <a href="{{ url_for('guardar_contrato') }}"> <button class="btn btn-secondary ">CANCELAR</button></a>
+              <a href="{{ url_for('index') }}"> <button class="btn btn-danger">SALIR</button></a>
+            </div>
         </div>
       </div>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
