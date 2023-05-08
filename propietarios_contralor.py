@@ -1,14 +1,23 @@
 import conec_sql
 
+def propietario_por_dni (dni):
+     conec_sql.connection().cursor()
+     with conec_sql.connection().cursor() as cursor:
+          cursor.execute("select id_propietario from Propietarios where DNI =(?);",(dni,))
+          dni=cursor.fetchone()
+          print(dni)
+          return dni
+
 
 def insertar_propietario(nombre, apellido, dni, cuit,direccion,telefono,celular,correo_electronico,fecha):
 
     conec_sql.connection().cursor()
-   
+    
     with conec_sql.connection().cursor() as cursor:
         cursor.execute ("INSERT INTO Propietarios (Nombre, Apellido, DNI, CUIT, Direccion, Telefono, Celular, Correo_electronico,fecha) VALUES ( (?),(?),(?),(?),(?),(?),(?),(?),(?));",
                         (nombre, apellido, dni, cuit,direccion,telefono,celular,correo_electronico,fecha),)
         cursor.commit()
+        
             
 
 def obtener_propietario(apellido):

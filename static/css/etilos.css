@@ -1,10 +1,17 @@
 body{
-    background: #FDC830;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #F37335, #FDC830);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #F37335, #FDC830); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    
+    background: rgb(205,215,191);
+background: radial-gradient(circle, rgba(205,215,191,0.8956582633053222) 0%, rgba(230,221,193,0.7780112044817927) 49%, rgba(188,220,202,0.4726890756302521) 100%);
 }
 .titulos{
 color:darkcyan;
 
+}
+
+.flashes{
+ color: red;
+ font-size: 20px;
+
+}
+#5{
+    color:bisque;
 }

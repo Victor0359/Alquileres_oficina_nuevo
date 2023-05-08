@@ -19,13 +19,13 @@
       <div class="d-flex">
         <div class="flex-grow-1 ms-3 ">
           <h5 class="mt-0 text-center">RECIBO INQUILINO</h5>
+          <br>
          {% for inq in Escrito %}
-         
-          <p class="text-right pl-5"> En Adrogue a los {{ Fecha }}</p>
+         <p class="text-end">En Adrogue, a los {{ Fecha }}.</p>
           
           <p class="text-right mt1"> <strong>Cuota {{inq[5]}}</strong></p>
-          <p class="text_midle"> En el día de la fecha recibo del Sr/a {{inq[2]}} la suma de pesos <strong >{{ Letras }}, ($ {{inq[17]}},=)</strong> , correspondientes al mes de {{ inq[7] }} del {{ Anos }}
-           referido a la finca ubicada en la localidad de {{ inq[4] }} con frente a la calle {{inq[3]}} cuyo vencimiento opera el día {{ Ultimo_dia , Formato }}</p>
+          <p class="text_midle">Recibimos del Sr/a {{inq[2]}} la suma de pesos <strong >{{ Letras }}, ($ {{inq[17]}},=)</strong> , correspondientes al mes de {{ inq[7] }} del {{ Anos }}
+           referido a la finca ubicada en la localidad de {{ inq[4] }} con frente a la calle {{inq[3]}} cuyo vencimiento opera el día {{ Ultimo_dia }} {{ Formato }}.</p>
           
         </div>
       </div>

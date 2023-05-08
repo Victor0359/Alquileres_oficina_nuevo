@@ -118,7 +118,7 @@ def guardar1():
 
 @app.route("/guardar_propietario", methods=["POST"])
 def guardar_propietario():
-
+    error=None
     nombre = request.form["nombre"].title()
     apellido = request.form["apellido"].title()
     dni = request.form["dni"]
@@ -129,7 +129,13 @@ def guardar_propietario():
     correo_electronico = request.form["correo_electronico"]
     fecha = request.form["fecha"]
     fecha_dt = datetime.datetime.strptime(fecha, "%Y-%m-%d")
-    propietarios_contralor.insertar_propietario(
+   
+    dni1=propietarios_contralor.propietario_por_dni(dni)
+     
+    if  (dni1 != None):
+        flash('hay un Propietario registrado!!')
+    else:
+        propietarios_contralor.insertar_propietario(
         nombre,
         apellido,
         dni,
@@ -139,8 +145,8 @@ def guardar_propietario():
         celular,
         correo_electronico,
         fecha_dt,
-    )
-    return redirect('/propietario')
+        )
+    return redirect(url_for('guardar_propietario', error=error))
 
 
 @app.route("/propietario")
@@ -197,7 +203,7 @@ def guardar3():
 
 @app.route("/guardar_inquilino", methods=["POST"])
 def guardar_inquilino():
-
+    error=None
     nombre = request.form["nombre"].title()
     apellido = request.form["apellido"].title()
     dni = request.form["dni"]
@@ -208,7 +214,14 @@ def guardar_inquilino():
     correo_electronico = request.form["correo_electronico"]
     fecha = request.form["fecha"]
     fecha_dt = datetime.datetime.strptime(fecha, "%Y-%m-%d")
-    inquilinos_contralor.insertar_inquilino(
+    
+    error= inquilinos_contralor.select_inquilino_por_dni(dni)
+    
+    if  (error != None):
+        flash('hay un Inquilino registrado!!')
+    else:
+    
+        inquilinos_contralor.insertar_inquilino(
         nombre,
         apellido,
         dni,
@@ -219,7 +232,7 @@ def guardar_inquilino():
         correo_electronico,
         fecha_dt,
     )
-    return redirect("/inquilino")
+    return redirect("/guardar_inquilino")
 
 
 @app.route("/inquilino")
@@ -547,7 +560,7 @@ def recibo_guardar():
                      saldo_pendiente_mensualidad=(saldo_ant_mensualidad+Meses_Adeudados)-pago
                      saldo_pendiente_servicios=abl+aysa+exp_comunes+seguros+varios
             elif pago> (saldo_ant_mensualidad+Meses_Adeudados):
-                     saldo_pendiente_servicios=(abl+aysa+exp_comunes+seguros+varios+Meses_Adeudados)-pago
+                     saldo_pendiente_servicios=total-pago
                      saldo_pendiente_mensualidad=0 
             
              
@@ -604,9 +617,9 @@ def recibo_escrito(ids):
         ultimo_dia= calendar.monthrange(int(ano),int(mes1))[1]
         anos= datetime.datetime.strftime(i[6],'%Y')
         numero = i[17]
-        formato_ultimo_dia_mes= recibos_control.formato_fecha_vencimiento(i[6])
+        formato_ultimo_dia_mes= recibos_control.formato_fecha_vencimiento (i[6])
         letras= numeros_a_letras.numero_a_letras(numero)
-    
+       
     
     return render_template ("escrito_inq.html", Escrito=escritos, Letras=letras, Fecha=fecha1, Mes=mes, 
                             Ultimo_dia=ultimo_dia, Formato=formato_ultimo_dia_mes,Anos=anos)

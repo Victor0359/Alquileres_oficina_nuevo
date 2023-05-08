@@ -1,5 +1,12 @@
 import conec_sql 
-import json
+
+
+def select_inquilino_por_dni(dni):
+     conec_sql.connection().cursor()
+     with conec_sql.connection().cursor() as cursor:
+         cursor.execute("select id_Inquilinos from Inquilinos where DNI=(?);",(dni),)
+         dni= cursor.fetchone()
+         return dni
 
 
 

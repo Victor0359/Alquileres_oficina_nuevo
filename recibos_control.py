@@ -212,6 +212,7 @@ def formato_fecha_vencimiento(date):
                 11: "Noviembre",
                 12: "Diciembre",
             }
+   
     #retornamos el resultado
     return f"del mes de {months[int(month)]} del {year}"
 
@@ -233,7 +234,7 @@ def formato_fecha_mes(date):
                 12: "Diciembre",
             }
     #retornamos el resultado
-    return f"{months[int(date)]} "
+    return months[int(date)]
 
 
 def valores(x):

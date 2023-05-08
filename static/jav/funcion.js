@@ -1,8 +1,8 @@
 $(function(){
-$("#tabla").on('click','#1',function(event){
+    $("#tabla").on('click','#1',function(event){
 		event.preventDefault();
 		
-Swal.fire ({
+    Swal.fire ({
 		title: 'Deseas modificar el archivo?',
 		text: "Exitos!",
 		icon: 'warning',
@@ -23,8 +23,8 @@ Swal.fire ({
 	
 	$("#tabla").on('click','#2',function(event){
 		event.preventDefault();
-		console.log(event.target.href)		
-Swal.fire ({
+				
+    Swal.fire ({
 		title: 'Deseas ELIMINAR el archivo?',
 		text: "Si lo eliminas no hay vuelta atrás!",
 		icon: 'error',
@@ -37,10 +37,15 @@ Swal.fire ({
         preConfirm:()=>{
 	        location.href=event.target.href;
             }
+    });
+    });
+	});
+	
+		
+	
+		
+
+	
+	    
 
 
-});
-
-    
-});
-});
