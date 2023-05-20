@@ -1,0 +1,88 @@
+{% extends 'principal.html' %}
+{% block titulo %}
+ ver recibo propietario
+{% endblock %}
+{% block contenido %}
+<div class="container center">
+    <br />
+    <br />
+    <br />
+    <form action="{{ url_for('ver_recibos_propietarios') }}", method="Post" >
+      <div class="form-row align-items-center">
+        <div class="col-auto my-1">
+          <label class="mr-sm-2" for="inlineFormCustomSelect">Propietarios</label>
+          
+          <select class="custom-select mr-sm-2" multiple data-mdb-filter="true" id="inlineFormCustomSelect" name="list">
+            <option>Campo requerido</option>
+            {% for prop in propietarios %}
+              <option value="{{ prop[0] }}">{{ prop[1] }}</option>
+            {% endfor %}
+          </select>
+      <button type="submit" class="btn btn-primary btn-lg" placeholder="Seleccione Propiedad"> BUSCAR 
+
+        </div>
+      </div>
+    </div>
+  </form>
+    </form>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-primary" id="tabla">
+      <thead>
+        <tr>
+          <th scope="col">id_recibo</th>
+          <th scope="col">num_rec</th>
+          <th scope="col">Propiedad</th>
+          <th scope="col">fecha</th>
+          <th scope="col">mes:cont</th>
+          <th scope="col">mes_pago</th>
+          <th scope="col">mensualidad</th>
+          <th scope="col">abl</th>
+          <th scope="col">aysa</th>
+          <th scope="col">ex_extr</th>
+          <th scope="col">seguro</th>
+          <th scope="col">varios</th>
+          <th scope="col">sal_anterior</th>
+          <th scope="col">total</th>
+          <th scope="col">pago</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for propi in prop %}
+          <tr class="">
+            <td>{{ propi[0] }}</td>
+            <td>{{ propi[1] }}</td>
+            <td>{{ propi[3] }}</td>
+            <td>{{ propi[4] }}</td>
+            <td>{{ propi[5] }}</td>
+            <td>{{ propi[6] }}</td>
+            <td>{{ propi[7] }}</td>
+            <td>{{ propi[9] }}</td>
+            <td>{{ propi[10] }}</td>
+            <td>{{ propi[11] }}</td>
+            <td>{{ propi[12] }}</td>
+            <td>{{ propi[13] }}</td>
+            <td>{{ propi[14] }}</td>
+            <td>{{ propi[16] }}</td>
+            <td>{{ propi[17] }}</td>
+                         
+            <td>      
+
+              <a href=" {{ url_for ('recibo_escrito_prop', ids=propi[0]) }}  "  class="btn btn-success" placeholder="recibo_escrito"onclick="">Recibo </a> 
+            </td>
+           {% endfor %} 
+            </tr> 
+          
+          
+       
+      </tbody>
+    </table>
+  </div>
+         
+           
+          
+{% endblock %}
+</body>
+</html>

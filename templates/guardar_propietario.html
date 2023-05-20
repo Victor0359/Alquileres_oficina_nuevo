@@ -20,7 +20,15 @@
                 {% if messages %}
                   <ul class=flashes>
                   {% for message in messages %}
-                    <li>{{ message }}</li>
+                  <!--  <li>{{ message }}</li>-->
+                  <script type="text/javascript">
+                    Swal.fire({
+                      icon:'warning',
+                      title: "Propietario ya registrado"
+                   } )
+
+                </script> 
+
                   {% endfor %}
                   </ul>
                 {% endif %}

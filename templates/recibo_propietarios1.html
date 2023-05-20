@@ -5,24 +5,27 @@ lista propietario
 {% block contenido %}
 <div class="container">
   <form action="#" method="POST">
-      <div class="row g-3">
+     <div class="mb-5">
+      
+     </div> <div class="row g-3">
           <div class="col-md">
-           <div class="mb-3">
-              <div class="form-floating">
-              <select class="form-select" id="floatingSelectGrid" type="submite" aria-label="Floating label select example" name="propietario">
+           
+              <label for="floatingSelectGrid">Propietario</label>
+              <div class="form-floating mb-3">
+              <select class=" form select "  multiple data-mdb-filter="true" id="floatingSelectGrid" type="submite" aria-label="Floating label select example" name="propietario">
               <option selected>Seleccione</option>
               {% for prop in propietario %}
               <option value="{{prop[0]}}">{{prop[1]}}</option>
               {% endfor %}
               </select>
-              <label for="floatingSelectGrid">Propietario</label>
+              
               </div>
            </div>
            <div class="row g-3">
               <div class="col-md">
                <div class="mb-3">
                   <div class="form-floating">
-                  <input type="submit" class="btn btn-alarm text-center " value="Enviar">
+                     <button class="btn btn-primary" type="submit">Enviar</button>
                   </div>
                </div>
               </div>

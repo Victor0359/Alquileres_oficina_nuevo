@@ -6,10 +6,10 @@ def lista_propietarios():
     cursor = conec_sql.connection().cursor
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT id_Propietario,concat(Nombre,' ',Apellido) FROM Propietarios order by Apellido ASC;"
+            "SELECT id_Propietario,concat(Apellido,' ',Nombre) FROM Propietarios order by Apellido "
         )
         propietarios = cursor.fetchall()
-
+      
         return propietarios
 
 

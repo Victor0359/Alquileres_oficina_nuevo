@@ -39,19 +39,19 @@ def meses(id):
                cuota_inicio=cursor1.fetchone()
                cuota_inicio1=cuota_inicio[0]
                
-            
+               
                
             if entrada is None:
                   entrada=cuota_inicio1+1
                
             else:
-                entrada = entrada +1
+                entrada = entrada
                 
                
                
     salida= datetime.datetime.now().strftime("%m")
     salida=int(salida)
-    print(entrada,salida,cuota_inicio1) 
+    
     
     mes1=["enero", "febrero","marzo","abril","mayo","junio",
           "julio","agosto","septiembre","octubre","noviembre",
@@ -63,7 +63,7 @@ def meses(id):
     
     if entrada is None:
         entrada=cuota_inicio1
-        print(entrada)
+        
     
     if entrada == salida:
         impagos=entrada
@@ -75,13 +75,13 @@ def meses(id):
         impagos2.extend([i for i in range(entrada,13)])
         impagos2.extend([i for i in range(1,salida+1)])
         impagos3.extend(impagos2)
-    print(impagos,"-",impagos1,"-",impagos2,"-",impagos3)   
+    print(entrada,salida)  
+    dict_impago=list(impagos3)
+
     
-   
-    dic_impago= list(map(mes.get,impagos3))
+    dict_impago1=map(mes.get,dict_impago)
+        
+    print(dict_impago)
+    j=functools.reduce(lambda sub, ele: sub + " - " + ele, dict_impago1 )
     
-       
-    j=functools.reduce(lambda sub, ele: sub * 1 + " - " + ele, dic_impago)
-         
     return j
-   

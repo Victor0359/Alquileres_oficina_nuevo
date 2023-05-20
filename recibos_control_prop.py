@@ -48,10 +48,10 @@ def suma_pagos_rec_inq(id):
           suma_recibo=suma1  
     elif suma == None:
         suma_recibo=suma   
-    
+        
    
     suma2=['apellido', 'direccion', 'cuotameses','mes_de_ontrato', 'meses', 'abl', 'aysa','seguros', 'honorarios','pago']   
-    print (suma_recibo, suma2)
+    
     suma_de_valores1= dict(zip(suma2,suma_recibo[0]))
     
     
@@ -65,13 +65,20 @@ def suma_pagos_rec_inq(id):
        exp_ext= exp_extraordinarias_rec_prop(id)
        
     suma_de_valores1['numRecibo']= num_recibo[0]
-    suma_de_valores1['exp_ext']= exp_ext[0]
+    suma_de_valores1['exp_ext']= exp_ext
     suma_de_valores1['fecha1']= fecha1
- 
-    print(suma_de_valores1)
-      
-
     return suma_de_valores1
+
+def saldo_anterior_mensualiadad(id):
+    
+        cursor= conec_sql.connection().cursor()
+        with conec_sql.connection().cursor() as cursor:
+            cursor.execute("select top(1) monto_mensualidad,monto_servicios from Saldo_propietario where id_propiedad=(?)\
+                           group by monto_mensualidad,monto_servicios, id_saldo_prop order by id_saldo_Prop",(id),)
+            saldo_anterior = cursor.fetchall()
+           
+            return saldo_anterior
+
           
 def Num_recibo_prop():
     try:
@@ -89,19 +96,20 @@ def Num_recibo_prop():
         print("error en la indexacion")  
         
 def exp_extraordinarias_rec_prop(id):
-    
+    exp_ext=None
     cursor= conec_sql.connection().cursor()
     with conec_sql.connection().cursor() as cursor:
         cursor.execute ("select sum (imp.exp_extraordinarias) as exp from Impuestos as imp inner\
-            join Recibo_Inquilino as rec on rec.id_propiedad = imp.Id_Propiedades where\
-                imp.fecha >= (select fecha from Recibo_Inquilino Where id_propiedad=(?)) and imp.Id_Propiedades=(?)",
+                       join Recibo_Inquilino as rec on rec.id_propiedad = imp.Id_Propiedades where\
+                imp.fecha >= (select max(fecha) from Recibo_Inquilino Where id_propiedad=(?)) and imp.Id_Propiedades=(?)",
                         (id,id,),)
         exp_ext=list(cursor.fetchone())
-        if exp_ext is not None:
+       
+        if exp_ext[0] != None:
             exp_ext
         else:
-            exp_ext=0
-        
+            exp_ext = 0
+         
     return exp_ext
 
 def honorarios(id):
@@ -127,12 +135,37 @@ def guardar_rec_prop(guardar):
     cursor= conec_sql.connection().cursor()
     with conec_sql.connection().cursor() as cursor:
         cursor.execute ("insert into  Recibo_propietario (num_recibo,id_propietario,\
-                        id_propiedad,fecha,mes_contrato,abl,aysa, exp_extraor,seguros,\
+                        id_propiedad,fecha,mes_contrato,meses_adeudados,Mensualidad,abl,aysa, exp_extraor,seguros,\
                         varios, monto_mensualidad,honorarios,total,pago) values ((?),(?),(?),(?),\
-                        (?),(?),(?),(?),(?),(?),(?),(?),(?),(?))",(guardar),)
+                        (?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?))",(guardar),)
        
         cursor.commit()
+
+def ver_recibo_propietario(id):
+    with conec_sql.connection().cursor() as cursor:
+        cursor.execute(
+            "SELECT * FROM Recibo_propietario WHERE id_Propietario=(?)",
+            (id,),
+        )
+       
+        propiedad = cursor.fetchall()
+        return propiedad
+    
+def escrito_prop(ids):
+    
+    with conec_sql.connection().cursor() as cursor:
+        cursor.execute (
+            "SELECT top(5)rec.id_recibo_propietario, rec.num_recibo, concat(propin.Apellido,' ',propin.Nombre)\
+                ,prop.Dirección,prop.localidad,rec.fecha,rec.mes_contrato,rec.meses_adeudados,rec.Mensualidad,\
+                rec.abl,rec.aysa,rec.exp_extraor, rec.seguros,rec.varios,rec.monto_mensualidad,rec.honorarios,\
+                 rec.total, rec.pago from Recibo_Propietario as rec Inner join Propiedades as prop on prop.id_propiedades\
+                =rec.id_propiedad inner Join Propietarios as propin on propin.id_Propietario=rec.id_propietario\
+                 where rec.id_recibo_propietario=(?) order by rec.id_Recibo_propietario  ",
+                 (ids,), )
          
- 
+        recibo= cursor.fetchall()
+        
+        
+        return recibo
 
 

@@ -18,7 +18,7 @@ def Num_recibo():
                 numero = 1
             else:
                 numero=numero[0]
-            print (numero)
+           
             
             return numero
         
@@ -38,7 +38,7 @@ def Num_recibo_propietario():
                 numero = 1
             else:
                 numero=numero[0]
-            print (numero)
+            
     except TypeError:
         print("Hay un error")
     except IndexError:
@@ -150,7 +150,7 @@ def direccion(id):
             direccion1=[]
             direccion = cursor.fetchall()
             direccion1=[i for i in direccion]
-            print (direccion,type (direccion1))
+            
             return direccion1
    
     except ValueError as val:
@@ -372,11 +372,11 @@ def saldo_anterior(id):
             
             if len(saldo_inq) ==0: 
                saldo_inq1=[(0,0)]
-               print(saldo_inq1)   
+                 
                return saldo_inq1
             elif saldo_inq is not None:
                 saldo_inq=[i for i in saldo_inq]
-                print(saldo_inq)
+               
                 return saldo_inq    
                
         

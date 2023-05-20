@@ -19,6 +19,7 @@ from flask_restful import Resource, Api
 import meses
 import loguin
 from formularios import Formularios
+import itertools
 
 app = Flask(__name__)
 api=Api(app)
@@ -522,14 +523,9 @@ def recibo_inquilino(id, varios):
 
 
 @ app.route ('/recibo_inquilino', methods=["POST"])    
-
-
 def recibo_guardar():
-    try:
-            mensualidad=0
-            
+   
             saldo_ant_mensualidad=0
-            saldo_ant_servicios=0
             saldo_pendiente_mensualidad=0
             saldo_pendiente_servicios=0
             pago=0
@@ -541,7 +537,7 @@ def recibo_guardar():
                fecha1=datos['fecha']
                fecha=datetime.datetime.strptime(fecha1, "%d/%m/%yyyy")
                mes_contrat=datos['cuota']
-               str_mes=datos['meses_adeudados']
+               str_mes=datos['meses_adeudados'] 
                Meses_Adeudados=int(datos['mensualidad'])
                abl=int(datos['abl'])
                aysa=int(datos['aysa'])
@@ -569,11 +565,9 @@ def recibo_guardar():
                             str_mes,Meses_Adeudados,abl,aysa,exp_comunes,seguros,varios,total,
                             pago, saldo_pendiente_servicios, saldo_pendiente_mensualidad)           
     
-    
-    except ValueError as valores:
-             print(valores)           
-           
-    return redirect(url_for("recibo"))
+            #flash("Se ha grabado satisfactoriamente")
+   
+            return redirect(url_for("recibo"))
 # ---------------------------------------------------- escritos inquilinos -----------------------------------------
 
 @ app.route ('/ver_recibo_inquilinos')
@@ -587,8 +581,7 @@ def ver_recibo_inquilino():
        for i in escrito:
            ids=i[0]
        
-           print(ids)      
-          
+                     
        return render_template ('ver_recibo_inquilino.html', Escritos=escrito, ids=ids)
        
           
@@ -656,15 +649,24 @@ def recibo_propietario1(id):
 def recibo1(id,valores):  
         id=id
         varios= valores
-        rec_prop={}
+        rec1= recibos_control_prop.saldo_anterior_mensualiadad(id)
         rec=recibos_control_prop.suma_pagos_rec_inq(id)
         honor=int(rec['honorarios'])   
         meses= int(rec['meses']) 
         honorarios= int(meses*(honor/100)) 
         rec["honorarios"]=honorarios
-      
-           
-    
+        rec["varios"]= varios
+        rec["id_propiedad"]=id
+        if rec1[0][0] ==None:
+            rec1[0][0]=0
+        if rec1[0][1]==None:
+            rec1[0][1]=0
+        rec["saldo_servicios"]= rec1[0][0]
+        rec["saldo_mensualidad"]= rec1[0][1]       
+        
+        with open ('recibo_prop2.json','w') as recibo:
+           json.dump (rec,recibo)
+
         return render_template('recibo_propietario.html',prop=rec, varios=varios)    
         
             
@@ -698,10 +700,10 @@ def recibo3(abl1,aysa1,seg1):
     
     saldo=None
     
-    with open('recibo_prop1.json','r') as cont:
+    with open('recibo_prop2.json','r') as cont:
         reci=json.load(cont)
-        print(reci)
-    
+        
+   
     mensualidad = reci["meses"]  
     if abl1 =='1':
           abl=reci["abl"]
@@ -721,23 +723,23 @@ def recibo3(abl1,aysa1,seg1):
     elif seg1 =='0':
         seg=0
     
-           
+             
     hono= reci["honorarios"]
-          
-    honorarios= int(mensualidad * int(hono)/100)
-    
-    saldo= mensualidad + int(reci['valores'])+ abl + aysa + seg + int(reci['exp_ext'])- honorarios  
+        
+    saldo= mensualidad + int(reci['varios'])+ abl + aysa + seg + int(reci['exp_ext']) + reci['saldo_mensualidad']- hono  
     
    
     
     id_prop= recibos_control_prop.id_propietario(reci['id_propiedad'])
    
     recibo={'apellido':reci['apellido'],'direccion':reci['direccion'],
-            'cuotameses':reci['cuotameses'],'meses':reci['meses'], 'abl':
-             abl, 'aysa':aysa, 'seguros':seg, 'honorarios': honorarios,
-             'numeroRecibo':reci['numeroRecibo'], 'exp_ext':reci['exp_ext'],
-             'fecha1':reci['fecha1'],'valores':reci['valores'], 'saldo':saldo,'id_propiedad':
-             reci['id_propiedad'], 'id_propietario':id_prop[0]}
+            'cuotameses':reci['cuotameses'], 'mes_de_ontrato':reci['mes_de_ontrato'],'meses':reci['meses'], 'abl':
+             abl, 'aysa':aysa, 'seguros':seg, 'honorarios': hono,
+             'numeroRecibo':reci['numRecibo'], 'exp_ext':reci['exp_ext'],
+             'fecha1':reci['fecha1'],'valores':reci['varios'], 'saldo':saldo,'id_propiedad':
+             reci['id_propiedad'], 'id_propietario':id_prop[0], 'saldo_mensualidad':reci['saldo_mensualidad'],
+             'saldo_servicios':reci['saldo_servicios']}
+   
     
     with open ('recibo_prop2.json','w') as rec:
         r=json.dump (recibo, rec)
@@ -747,19 +749,26 @@ def recibo3(abl1,aysa1,seg1):
 @ app.route('/guardar_recibo_prop', methods=["POST"])
 def guardar():
     pago=None
-    guardar1=[]
+    
     if request.method=="POST":
         pago= request.form["pago"]
         with open ('recibo_prop2.json','r') as reci:
             reci= json.load(reci)
+                 
+            if pago < (int(reci["saldo"])):
+                     reci["saldo_mensualidad"]=int(reci["saldo"])-pago
+                    
+            elif pago> (int(reci["saldo"])):
+                    reci["saldo_mensualidad"]=int(reci["saldo"])-pago
+            
            
             fecha1=datetime.datetime.now().isoformat()
-            
+        
         guardar_prop= {'num_recibo': int(reci['numeroRecibo']),'id_propietario':
         int(reci['id_propietario']),'id_propiedad': int(reci['id_propiedad']),
-        'fecha':fecha1, 'mes_contrato': int(reci['cuotameses']),
+        'fecha':fecha1, 'mes_contrato': int(reci['cuotameses']),'mes_de ontrato':reci['mes_de_ontrato'],'meses': reci['meses'],
         'abl': int(reci['abl']), 'aysa':int(reci['aysa']),'exp_extraor': int(reci['exp_ext']),'seguros': int(reci['seguros']),
-        'varios':int(reci['valores']), 'monto_mensual': int(reci['meses']),'honorarios':int(reci['honorarios']),
+        'varios':int(reci['valores']), 'monto_mensual': int(reci['saldo_mensualidad']),'honorarios':int(reci['honorarios']),
         'total':int(reci['saldo']), 'pago':int(pago),
         }
         with open ('guardar_propietario.json','w') as guar:
@@ -770,134 +779,61 @@ def guardar():
             
         guardar=re.values()
         guardar=list(guardar)
-        print(guardar)   
+          
                 
         g= recibos_control_prop.guardar_rec_prop(guardar)  
                 
         
         
-    return redirect(url_for('recibo_propietario'))    
-        
-            
-    """with open('recibo_prop2.json','w') as re:
-        re= json.dump(re)
-    
-        
-        ret=recibos_control_prop.guardar_rec_prop()
-    return redirect(url_for('recibo_propietario'))"""
-    
-    """    return redirect (url_for ("recibo1"))   
-   else: 
-     with open('guardar_prop.json', 'r') as contenido:
-           jrecibo3= json.load(contenido) 
-    
+    return redirect(url_for('recibo_propietario'))  
 
-     return render_template ("recibo_propietario_final.html", jrecibo3=jrecibo3)  
-   
-                       
-            
-   return render_template("recibo_propietario.html",jrecibo2=jrecibo2)      
+@ app.route ('/ver_recibos_propietarios', methods=["POST","GET"])
+ 
+def ver_recibos_propietarios(): 
+    id=None
+    if request.method=="POST":
+         id = int(request.form.get("list"))
+    
+    propietarios = listas.lista_propietarios()
+    
+    prop=recibos_control_prop.ver_recibo_propietario(id)
+    
+    return render_template("recibo_propietario_ver.html", propietarios=propietarios, prop=prop)
+
+@ app.route ('/recibo_escrito_prop/<ids>')
+def recibo_escrito_prop(ids):
+    ids= int(ids)
+    escritos=list(recibos_control_prop.escrito_prop(ids))
+    letras=None
+    fecha1=None
+    mes1=None
+    ano=None
+    mes=None
+    ultimo_dia=None
+    anos=None
+    numero=None
+    formato_ultimo_dia_mes=None
+    flat_list= itertools.chain(*escritos)  
+    
+    flat_list1= list(flat_list)
+    print(flat_list1),type(escritos)
+    #for i in flat_list1:
+    fecha=flat_list1[5]
+    fecha1=  recibos_control.formato_fecha(fecha)
+    mes1= datetime.datetime.strftime(flat_list1[5],'%m')
+    ano= datetime.datetime.strftime(flat_list1[5],'%y')
+    mes=recibos_control.formato_fecha_mes(int(mes1))
+    ultimo_dia= calendar.monthrange(int(ano),int(mes1))[1]
+    anos= datetime.datetime.strftime(flat_list1[5],'%Y')
+    numero = flat_list1[17]
+    formato_ultimo_dia_mes= recibos_control.formato_fecha_vencimiento (flat_list1[5])
+    letras= numeros_a_letras.numero_a_letras(numero)
+  
+    
+    return render_template ("escrito_prop.html", Escrito=flat_list1, Letras=letras, Fecha=fecha1, Mes=mes, 
+                            Ultimo_dia=ultimo_dia, Formato=formato_ultimo_dia_mes,Anos=anos)
+
        
-    rango1=int(datetime.datetime.today().month)
-    
-       mensualidad = recibos_control.locura(id)
-       print(mensualidad)
-       servicios = recibos_control.Servicios(id)
-       print(servicios)
-       if recibos_control.mensualidad1(id) is None:
-         mensualidad1 = "Mensualidad"
-       else:
-         mensualidad1 = recibos_control.mensualidad1(id)
-       
-       saldo = recibos_control.saldo_anterior(id)
-       print(saldo)  
-        
-       saldo_total=( 
-        mensualidad
-        + servicios[0]
-        + servicios[1]
-        + servicios[2]
-        + servicios[4]
-        + saldo[0]
-        + int(varios))
-        
-          
-        
-    jrecibo2 = {
-            "mensualidad": mensualidad,
-            "inquilinos": propiedades[0][0],
-            "recibo": recibo,
-            "cuota": cuota[0],
-            "direccion": direccion[0][0],
-            "fecha": datetime.datetime.now().strftime("%d/%m/%y"),
-            "abl": servicios[0],
-            "aysa": servicios[1],
-            "exp_comunes": servicios[2],
-            "seguros": servicios[4],
-            "varios": int(varios),
-            "saldo": saldo,
-            "saldo_total": saldo_total,}
-          
-            
-            with open("guardar_prop.json","w") as contenido:
-            json.dump(jrecibo2,contenido)
-                          
-        
-              
-
-  Mensualidad1=mensualidad1,
-              Recibo=recibo,
-              Propiedades=propiedades,
-              Cuota=cuota,
-              Propiedad=propiedad,
-              Fecha=fecha1)
-Mensualidad=mensualidad,
-                 Servicios=servicios,
-                 Saldo=saldo,
-                 Saldo_total=saldo_total,
-                 varios=varios
-                
-
-               
-
-
-@ app.route ('/recibo_propietario', methods=["POST"])    
-
-
-def recibo_guardar():
-        try:
-            mensualidad=0
-            saldo_pendiente=None
-            pago=None
-            with open('guardar_inq.json', 'r') as contenido:
-               datos= json.load(contenido)
-               inq=int(datos['inquilinos'])
-               propiedades=datos['direccion']
-               fecha1=datos['fecha']
-               fecha=datetime.datetime.strptime(fecha1, "%d/%m/%y")
-               cuota=datos['cuota']
-               mensualidad=datos['mensualidad']
-               abl=datos['abl']
-               aysa=datos['aysa']
-               exp_com=datos['exp_comunes']
-               seguro=datos['seguros']
-               varios=datos['varios']
-               saldo_ant=datos['saldo']
-               total_general=int(datos['saldo_total'])
-               
-            if request.method=="POST":
-                  pago=int(request.form["pago"])    
-            saldo_pendiente=total_general-pago  
-            
-            recibos_control.guardar_recibo(inq,propiedades,fecha,cuota,mensualidad,abl,aysa,exp_com,\
-               seguro,varios,saldo_ant,total_general,saldo_pendiente,pago)
-              
-        except ValueError as valores:
-             print(valores)           
-           
-        return redirect(url_for("recibo")) """                    
-
-
 if __name__ == "__main__":
 
     app.run(debug=True)

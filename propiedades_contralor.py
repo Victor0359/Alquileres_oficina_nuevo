@@ -69,4 +69,7 @@ def actualizar_propiedad(direccion, localidad, propietario, id):
             ),
         )
         cursor.commit()
+
+
+
        

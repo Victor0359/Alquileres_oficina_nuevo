@@ -5,6 +5,7 @@
 {% block contenido %}
 
     <div class="container">
+      
       <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
@@ -15,10 +16,29 @@
             </div>
             <div class="card-body">
            
-                <form action="/recibo_inquilino", method="POST" >
+                <form action="{{ url_for('recibo_guardar') }}", method="POST" >
                         <div class="row g-3">
                             <form class="row g-3">
-  
+                                <div> 
+                                  
+                                  {% with messages = get_flashed_messages() %}
+                                  {% if messages %}
+                                    <ul class=flashes>
+                                    {% for message in messages %}
+                                      <!--<li>{{ message }}</li>-->
+                                      <script type="text/javascript">
+                                          Swal.fire({
+                                            icon:'warning',
+                                            title: "Se ha grabado exitosamente!"
+                                         } )
+          
+                                      </script> 
+                 
+                                    {% endfor %}
+                                    </ul>
+                                  {% endif %}
+                                {% endwith %}
+                                </div>
  
                             <div class="row g-3">
                               <div class="col-md">
@@ -157,7 +177,7 @@
          </div>
        </div>                
    </div> 
-      
+   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>   
 </main>
 
 {% endblock %}
