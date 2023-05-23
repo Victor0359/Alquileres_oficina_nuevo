@@ -9,7 +9,7 @@ def lista_propietarios():
             "SELECT id_Propietario,concat(Apellido,' ',Nombre) FROM Propietarios order by Apellido "
         )
         propietarios = cursor.fetchall()
-      
+        print(propietarios)
         return propietarios
 
 
@@ -37,6 +37,7 @@ def lista_propiedades():
         )
 
         propiedades = cursor.fetchall()
+        print(propiedades)
 
         return propiedades
 
@@ -83,15 +84,15 @@ def lista_propiedades_por_propiedad(id):
 
         return propiedad
     
-def lista_propiedades_por_nombre_propiedad(propiedad):
+def lista_propiedades_por_nombre_propiedad(id):
     cursor = conec_sql.connection().cursor()
     propiedad = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
             "SELECT Id_Propiedades,Dirección,localidad, concat(propie.Nombre, '' ,propie.Apellido)\
              as Propietario FROM Propiedades as pro inner join Propietarios as propie on propie.id_Propietario=\
-             pro.propietario WHERE Dirección like('%?%')",
-            (id),
+             pro.propietario WHERE Dirección like(?)",
+            ("%"+str(id)+"%"),
         )
 
         propiedad = cursor.fetchall()

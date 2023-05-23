@@ -54,7 +54,7 @@ def index():
 def page_not_found(error):
  return render_template("pagina_no_encontrada.html"), 404
 
-
+# ----------------------------   Propiedad   ------------------------------------#               
 
 @app.route("/guardar_propiedad", methods=["POST","GET"])
 def guardar_propiedad():
@@ -76,13 +76,11 @@ def guardar_propiedad():
 
 @app.route("/propiedades")
 def propiedades():
-    direccion = request.args.get("dir")
-    propiedades = propiedades_contralor.obtener_propiedad(direccion)
-    busqueda = listas.lista_propietarios()
-    print(busqueda) 
-    return render_template(
-        "propiedades.html", Propiedades=propiedades, Busqueda=busqueda
-    )
+    apellido=request.args.get("prop")
+    propiedad = propiedades_contralor.obtener_propiedad1(apellido)
+  
+    print(propiedad)
+    return render_template("propiedades.html", Propiedad=propiedad)    
 
 
 @app.route("/eliminar_propiedad/<int:id>")
@@ -93,9 +91,11 @@ def eliminar_propiedad(id):
 
 @app.route("/editar_propiedad/<int:id>")
 def editar_propiedad(id):
+    propietarios=listas.lista_propietarios()
     propiedad = propiedades_contralor.obtener_propiedad_por_id(id)
-    
-    return render_template("editar_propiedad.html", Propiedad=propiedad)
+    propietarios1=itertools.chain(propietarios)
+    print(propietarios1)
+    return render_template("editar_propiedad.html", Propiedad=propiedad, Propietarios=propietarios1)
 
 
 @app.route("/actualizar_propiedad", methods=["POST"])
@@ -103,7 +103,7 @@ def actualizar_propiedad():
     id = int(request.form["id"])
     direccion = request.form["direccion"].title()
     localidad = request.form["localidad"].title()
-    propietario = int(request.form["propietario"])
+    propietario = int(request.form["prop"])
 
     propiedades_contralor.actualizar_propiedad(direccion, localidad, propietario, id)
 

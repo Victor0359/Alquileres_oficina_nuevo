@@ -70,6 +70,33 @@ def actualizar_propiedad(direccion, localidad, propietario, id):
         )
         cursor.commit()
 
+def obtener_propiedad1(apellido):
+
+    cursor=conec_sql.connection().cursor()
+    propiedad = None
+    with conec_sql.connection().cursor() as cursor:
+        cursor.execute(
+            "SELECT id_Propiedades,Dirección,Localidad,propietario,fecha FROM Propiedades where Dirección like (?);", ("%" + str(apellido) + "%"),
+           
+        )
+       
+        propiedad = cursor.fetchall()
+     
+        return propiedad
+
+def obtener_propiedad():
+
+    cursor=conec_sql.connection().cursor()
+    propiedad = None
+    with conec_sql.connection().cursor() as cursor:
+        cursor.execute(
+            "SELECT id_Propiedades,Dirección,Localidad,propietario,fecha FROM Propiedades order by Dirección")
+       
+        propiedad = cursor.fetchall()
+        
+        return propiedad
+
+
 
 
        

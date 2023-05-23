@@ -27,9 +27,12 @@
                   <input value="{{ Propiedad[2] }}" required type="text" class="input" placeholder="Localidad" id="localidad" name="localidad" />
                 </div>
                 <div class="mb-3">
-                  <label for="propietario">PROPIETARIO</label>
-                  <input value="{{ Propiedad[3] }}" required type="text" class="input" placeholder="Propietario" id="propiedad" name="propietario" />
-                </div>
+                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="prop">
+                    <option selected>Campo requerido</option>
+                   {% for prop in Propietarios %}
+                    <option value="{{prop[0]}}">{{prop[1]}}</option>
+                    {% endfor %}
+                  </select>
                 <div class="mb-3">
                   <button type="submit" class="btn btn-primary">GUARDAR</button>
                 </div>
