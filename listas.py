@@ -105,7 +105,7 @@ def lista_inquilinos():
     inquilinos = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT id_Inquilinos, concat(Apellido,' ',Nombre) FROM Inquilinos Apellido order by Apellido asc"
+            "SELECT id_Inquilinos, concat(Apellido,' ',Nombre) FROM Inquilinos order by Apellido asc"
         )
         inquilinos = cursor.fetchall()
 

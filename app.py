@@ -79,7 +79,6 @@ def propiedades():
     apellido=request.args.get("prop")
     propiedad = propiedades_contralor.obtener_propiedad1(apellido)
   
-    print(propiedad)
     return render_template("propiedades.html", Propiedad=propiedad)    
 
 
@@ -324,8 +323,8 @@ def impuesto():
 @app.route("/guardar_contrato")
 def guardar6():
     propiedades = listas.lista_propiedades()
-    inquilinos = listas.lista_inquilinos()
     propietarios = listas.lista_propietarios()
+    inquilinos = listas.lista_inquilinos()
     return render_template(
         "guardar_contratos.html",
         Propiedades=propiedades,
