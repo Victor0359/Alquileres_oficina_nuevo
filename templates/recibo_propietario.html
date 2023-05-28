@@ -1,187 +1,230 @@
 {% extends 'principal.html' %}
 {% block titulo %}
-  recibo
+recibo
 {% endblock %}
 
 {% block contenido %}
 <script type="text/javascript" src="\static\js\funcion.js"></script>
 <div class="container overflow-hidden">
-    <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-8">
-        <br />
-        <div class="card">
-          <div class="card-header">
-            <h2 class="text-center pt-1 titulos">RECIBO PROPIETARIO</h2>
-          </div>
-          <div class="card-body">
-                <form action="/recibo2" method="POST" >
-                  <div class="container">
-                     <div class="row mb-3">
-                         
-                            <div class="col-sm-1">
-                                 <label for="recibo" class="form-label">N° de recibo</label>
-                            </div>
-                            <div class="col-sm-2">
-                              <input type="text" disabled="true" value="{{ prop.numRecibo }}" class="form-control" name="num_recibo" id="num_recibo" aria-describedby="helpId" placeholder="" />
-                            </div>
-                            <div class="col-sm-1">
-                              <label for="mes_de_pago"  class="form-label">Mes Cont</label>
-                            </div>
-                            <div class="col-sm-2">
-                              <input type="text" disabled="true" value="{{ prop.cuotameses }}" class="form-control" name="mes" id="mes_de_pago" aria-describedby="helpId" placeholder="" />
-                            </div>
-                            <div class="col-sm-1">
-                              <label for="fecha" class="form-label">Fecha</label>
-                            </div>
-                            <div class="col-sm-5">
-                              <input type="text" disabled="true" value="{{ prop.fecha1 }}" class="form-control" name="fecha" id="fecha" aria-describedby="helpId" placeholder="" />
-                            </div>
-                        
+      <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                  <br />
+                  <div class="card">
+                        <div class="card-header">
+                              <h2 class="text-center pt-1 titulos">RECIBO PROPIETARIO</h2>
                         </div>
-                        <div class="row mb-3">
-                             <div class="col-sm-2">
-                             <label for="propietario" class="form-label">Propietario</label>
-                             </div>
-                             <div class="col-sm-4 ">
-                              <input class="text-capitalize-sm-start" type="text" disabled="true" value="{{ prop.apellido }}" class="form-control" name="propietario" id="propietario" aria-describedby="helpId" placeholder="" />
-                              </div>
-                              <div class="col-sm-2">
-                              <label for="propiedad" class="form-label" onclick="hola()" >Propiedad</label> 
-                              </div>
-                              <div class="col-sm-4">
-                              <input type="text" disabled="true" value="{{ prop.direccion }}" class="form-control" name="propiedad" id="propiedad" aria-describedby="helpId"  placeholder="" />
-                              </div>
+                        <div class="card-body">
+                              <form action="/recibo2" method="POST">
+                                    <div class="container">
+                                          <div class="row mb-3">
 
-                        </div>
+                                                <div class="col-sm-1">
+                                                      <label for="recibo" class="form-label">N° de recibo</label>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                      <input type="text" disabled="true" value="{{ prop.numRecibo }}"
+                                                            class="form-control" name="num_recibo" id="num_recibo"
+                                                            aria-describedby="helpId" placeholder="" />
+                                                </div>
+                                                <div class="col-sm-1">
+                                                      <label for="mes_de_pago" class="form-label">Mes Cont</label>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                      <input type="text" disabled="true" value="{{ prop.cuotameses }}"
+                                                            class="form-control" name="mes" id="mes_de_pago"
+                                                            aria-describedby="helpId" placeholder="" />
+                                                </div>
+                                                <div class="col-sm-1">
+                                                      <label for="fecha" class="form-label">Fecha</label>
+                                                </div>
+                                                <div class="col-sm-5">
+                                                      <input type="text" disabled="true" value="{{ prop.fecha }}"
+                                                            class="form-control" name="fecha" id="fecha"
+                                                            aria-describedby="helpId" placeholder="" />
+                                                </div>
 
-                        <div class="row mb-3">
-                              <div class="col-sm-2">
-                                <label for="mensualidad" class="form-label text-wrap">{{ prop.mes_de_ontrato }}</label>                              </div>
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-3">
-                                    <input class="text-end" type="text" disabled="true" value="$ {{ prop.meses }}" class="form-control" name="mensualidad" id="mensualidad" aria-describedby="helpId" placeholder="" /> 
-                               </div>
-                               
-                               <div class="col-sm-6"></div>
- 
-                        </div>
+                                          </div>
+                                          <div class="row mb-3">
+                                                <div class="col-sm-2">
+                                                      <label for="propietario" class="form-label">Propietario</label>
+                                                </div>
+                                                <div class="col-sm-4 ">
+                                                      <input class="text-capitalize-sm-start" type="text"
+                                                            disabled="true" value="{{ prop.apellido }}"
+                                                            class="form-control" name="propietario" id="propietario"
+                                                            aria-describedby="helpId" placeholder="" />
+                                                </div>
+                                                <div class="col-sm-2">
+                                                      <label for="propiedad" class="form-label"
+                                                            onclick="hola()">Propiedad</label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                      <input type="text" disabled="true" value="{{ prop.direccion }}"
+                                                            class="form-control" name="propiedad" id="propiedad"
+                                                            aria-describedby="helpId" placeholder="" />
+                                                </div>
 
-                        <div class="row mb-2">
-                              <div class="col-sm-2">
-                              <label for="abl" class="form-label">Abl</label>  
-                              </div>
-                              <div class="col-sm-1">
-                                <div class="form-check">
-                                    <input class="form-check-input " type="checkbox" value="1" name="chekabl" checked>
-                                 </div>   
-                              </div>
-                              <div class="col-sm-3">
-                                    <input class="text-end" type="text" disabled="true" value=" $ {{ prop.abl }} " class="form-control" name="abl" id="abl" aria-describedby="helpId" placeholder="" />    
-                               </div>
-                               
-                               <div class="col-sm-6"></div>
- 
-                        </div>
+                                          </div>
 
-                        <div class="row mb-2">
-                              <div class="col-sm-2">
-                                    <label for="aysa" class="form-label">Aysa</label>    
-                              </div>
-                              <div class="col-sm-1">
-                                    <div class="form-check">
-                                          <input class="form-check-input" type="checkbox" value="1" name="chekaysa" checked>
-                                         
+                                          <div class="row mb-3">
+                                                <div class="col-sm-2">
+                                                      <label for="mensualidad" class="form-label text-wrap">{{
+                                                            prop.mes_de_ontrato }}</label>
+                                                </div>
+                                                <div class="col-sm-1"></div>
+                                                <div class="col-sm-3">
+                                                      <input class="text-end" type="text" disabled="true"
+                                                            value="$ {{ prop.meses }}" class="form-control"
+                                                            name="mensualidad" id="mensualidad"
+                                                            aria-describedby="helpId" placeholder="" />
+                                                </div>
+
+                                                <div class="col-sm-6"></div>
+
+                                          </div>
+
+                                          <div class="row mb-2">
+                                                <div class="col-sm-2">
+                                                      <label for="abl" class="form-label">Abl</label>
+                                                </div>
+                                                <div class="col-sm-1">
+                                                      <div class="form-check">
+                                                            <input class="form-check-input " type="checkbox" value="1"
+                                                                  name="chekabl" checked>
+                                                      </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                      <input class="text-end" type="text" disabled="true"
+                                                            value=" $ {{ prop.abl }} " class="form-control" name="abl"
+                                                            id="abl" aria-describedby="helpId" placeholder="" />
+                                                </div>
+
+                                                <div class="col-sm-6"></div>
+
+                                          </div>
+
+                                          <div class="row mb-2">
+                                                <div class="col-sm-2">
+                                                      <label for="aysa" class="form-label">Aysa</label>
+                                                </div>
+                                                <div class="col-sm-1">
+                                                      <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="1"
+                                                                  name="chekaysa" checked>
+
+                                                      </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                      <input class="text-end" type="text" disabled="true"
+                                                            value=" $ {{ prop.aysa }}" class="form-control" name="aysa"
+                                                            id="aysa" aria-describedby="helpId" />
+                                                </div>
+
+                                                <div class="col-sm-6"></div>
+
+                                          </div>
+
+                                          <div class="row mb-2">
+                                                <div class="col-sm-2">
+                                                      <label for="seguro" class="form-label">Seguro</label>
+                                                </div>
+                                                <div class="col-sm-1">
+                                                      <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="1"
+                                                                  checked name="chekseguro">
+                                                      </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                      <input class="text-end" type="text" disabled="true"
+                                                            value=" $ {{ prop.seguros }}" class="form-control"
+                                                            name="seguro" id="seguro" aria-describedby="helpId"
+                                                            placeholder="" />
+
+                                                </div>
+
+                                                <div class="col-sm-6"></div>
+
+                                          </div>
+
+                                          <div class="row mb-2">
+                                                <div class="col-sm-3">
+                                                      <label for="exp_extr" class="form-label">Expensas extraor</label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                      <input class="text-end" type="text" disabled="true"
+                                                            value=" $ {{ prop.exp_ext }}" class="form-control"
+                                                            name="exp_extr" id="exp_extr" aria-describedby="helpId"
+                                                            placeholder="" />
+                                                </div>
+
+                                                <div class="col-sm-6"></div>
+
+                                          </div>
+
+                                          <div class="row mb-2">
+                                                <div class="col-sm-2">
+                                                      <label for="varios" class="form-label">Varios</label>
+                                                </div>
+                                                <div class="col-sm-1"></div>
+                                                <div class="col-sm-3">
+                                                      <input class="text-end" type="text" disabled="true"
+                                                            class="form-control" value=" $ {{ varios }}" name="varios"
+                                                            id="varios" aria-describedby="helpId" placeholder="" />
+                                                </div>
+
+                                                <div class="col-sm-6"></div>
+
+                                          </div>
+
+                                          <div class="row mb-2">
+                                                <div class="col-sm-2 text-right">
+                                                      <label for="honorarios" class="form-label">Honorarios</label>
+                                                </div>
+                                                <div class="col-sm-1"></div>
+                                                <div class="col-sm-3">
+                                                      <input class="text-end" type="text" disabled="true"
+                                                            class="form-control" value=" $ {{ prop.honorarios}} "
+                                                            name="honorarios" id="honorarios" aria-describedby="helpId"
+                                                            placeholder="" />
+                                                </div>
+
+                                                <div class="col-sm-6"></div>
+
+                                          </div>
+
+
+
                                     </div>
-                              </div>
-                              <div class="col-sm-3">
-                                    <input class="text-end" type="text" disabled="true" value=" $ {{ prop.aysa }}" class="form-control" name="aysa" id="aysa" aria-describedby="helpId"  />
-                               </div>
-                               
-                               <div class="col-sm-6"></div>
- 
-                        </div>
 
-                        <div class="row mb-2">
-                              <div class="col-sm-2">
-                                    <label for="seguro" class="form-label">Seguro</label>    
-                              </div>
-                              <div class="col-sm-1">
-                                    <div class="form-check">
-                                          <input class="form-check-input" type="checkbox" value="1"  checked  name="chekseguro" >
-                                    </div>
-                              </div>
-                              <div class="col-sm-3">
-                                    <input class="text-end" type="text" disabled="true" value=" $ {{ prop.seguros }}" class="form-control" name="seguro" id="seguro" aria-describedby="helpId" placeholder="" />
-                                    
-                               </div>
-                               
-                               <div class="col-sm-6"></div>
- 
-                        </div>
 
-                        <div class="row mb-2">
-                              <div class="col-sm-3">
-                                <label for="exp_extr" class="form-label">Expensas extraor</label>                           
-                                 </div>
-                                <div class="col-sm-3">
-                                    <input class="text-end" type="text" disabled="true" value=" $ {{ prop.exp_ext }}" class="form-control" name="exp_extr" id="exp_extr" aria-describedby="helpId" placeholder="" /> 
-                               </div>
-                               
-                               <div class="col-sm-6"></div>
-                                
-                        </div>
 
-                        <div class="row mb-2">
-                              <div class="col-sm-2">
-                                <label for="varios" class="form-label">Varios</label>                           </div>
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-3">
-                                    <input class="text-end" type="text" disabled="true" class="form-control" value=" $ {{ varios }}" name="varios" id="varios" aria-describedby="helpId" placeholder="" />
-                               </div>
-                               
-                               <div class="col-sm-6"></div>
-                                
-                        </div>
-                                           
-                        <div class="row mb-2">
-                              <div class="col-sm-2 text-right">
-                                <label for="honorarios" class="form-label">Honorarios</label>                           </div>
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-3">
-                                    <input class="text-end" type="text" disabled="true" class="form-control" value=" $ {{ prop.honorarios}} " name="honorarios" id="honorarios" aria-describedby="helpId" placeholder="" />
-                               </div>
-                               
-                               <div class="col-sm-6"></div>
-                                
-                        </div>
-                                             
-                        
-                        
-                        </div> 
-                                                               
-                                                  
-                              
-                                             
-            <div class="container text-center">
-                        <div class="row align-items-start">
-                                  <div class="col-4">
-                                        <label for="s_anterior" class="form-label">Saldo anterior servicios</label>
-                                        <input type="text" disable="true" value="{{prop.saldo_mensualidad}}" class="form-control" name="s_anterior" id="s_anterior" aria-describedby="helpId" placeholder="" />
-                                  </div>
-                                 
-                        <div> 
-                    <button type="submit" class="btn btn-primary"  onclick> guardar</button>
-                   </div> 
-                    
-             </div>         
-            </form>             
-           </div>
-          </div>
-                      
-    </div>
-   
 
-{% endblock %}
-</body>
-</html>
+                                    <div class="container text-center">
+                                          <div class="row align-items-start">
+                                                <div class="col-4">
+                                                      <label for="s_anterior" class="form-label">Saldo anterior
+                                                            </label>
+                                                      <input type="text" disable="true"
+                                                            value="{{prop.monto_mensualidad}}" class="form-control"
+                                                            name="s_anterior" id="s_anterior" aria-describedby="helpId"
+                                                            placeholder="" />
+                                                </div>
+
+                                                <div>
+                                                      <button type="submit" class="btn btn-primary" onclick>
+                                                            guardar</button>
+                                                </div>
+
+                                          </div>
+                              </form>
+                        </div>
+                  </div>
+
+            </div>
+
+
+            {% endblock %}
+            </body>
+
+            </html>

@@ -11,7 +11,7 @@
 
 <body>
    
-  <div class="container - fluid mt-4">
+  <div class="container - fluid mt-4 pt-4">
     <div class="card">
       
       <div class="card-body">
@@ -25,7 +25,7 @@
          <p class="text-end">En Adrogue, a los {{ Fecha }}.</p>
           
           <p class="text-right mt1"> <strong>Cuota {{ Escrito[6]}}</strong></p>
-          <p class="text_midle">En este acto hago entreg al SR/a {{Escrito[2]}} la suma de pesos <strong >{{ Letras }}, ($ {{ Escrito[17] }},=)</strong>, correspondientes al mes de {{ Mes }} del {{ Anos }},
+          <p class="text_midle">En este acto hago entrega al SR/a {{Escrito[2]}} la suma de pesos <strong >{{ Letras }}, ($ {{ Escrito[17] }},=)</strong>, correspondientes al mes de {{ Mes }} del {{ Anos }},
            referido a la finca ubicada en la localidad de {{ Escrito[4] }}, con frente a la calle {{Escrito[3]}}, cuyo vencimiento opera el día {{ Ultimo_dia }} {{ Formato }}.</p>
           
         
@@ -75,8 +75,17 @@
           <label for="inquilino" class="form-label text-right"> $ {{Escrito[15]}},=</label>
           </div>
           <div class="col-3">
-            <label for="inquilino" class="form-label">SUB TOTAL</label>
+            <label for="inquilino" class="form-label">SALDO ANTERIOR</label>
+        </div>
+
+        <div class="col-9 fluid">
+          <label for="inquilino" class="form-label text-right"> $ {{ Monto }},=</label>
           </div>
+          
+          <div class="col-3">
+              <label for="inquilino" class="form-label">SUB TOTAL</label>
+          </div>
+
           <div class="col-9 fluid">
             <label for="inquilino" class="form-label text-right"> $ {{Escrito[16]}},=</label>
             </div>

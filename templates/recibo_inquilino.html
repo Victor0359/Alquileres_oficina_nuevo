@@ -28,10 +28,20 @@
                                       <!--<li>{{ message }}</li>-->
                                       <script type="text/javascript">
                                           Swal.fire({
-                                            icon:'warning',
-                                            title: "Se ha grabado exitosamente!"
-                                         } )
-          
+                                               title: '{Debes actualizar el monto del contrato}',
+                                               icon: 'info',
+                                               html:
+                                                 '<a href="//contratos.html">links</a> ', 
+                                               showCloseButton: true,
+                                               showCancelButton: true,
+                                               focusConfirm: false,
+                                               confirmButtonText:
+                                                 '<i class="fa fa-thumbs-up"></i> Voy!',
+                                               confirmButtonAriaLabel: 'Thumbs up, Voy!',
+                                               cancelButtonText:
+                                                 '<i class="fa fa-thumbs-down"></i>',
+                                               cancelButtonAriaLabel: 'Thumbs down'
+                                             })
                                       </script> 
                  
                                     {% endfor %}

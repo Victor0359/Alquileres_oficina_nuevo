@@ -1,10 +1,9 @@
 from calendar import *
 import conec_sql
 import datetime
-import functools
 import numpy as np
 from itertools import chain
-import itertools
+
 
 
 def Num_recibo():
@@ -399,7 +398,7 @@ def guardar_recibo (num_Recibo,id_Inquilino,id_propiedad,fecha,mes_contrat,str_m
                 )
             
             cursor.commit()
-            
+           
     
     except ValueError as valores:
         print('Se ha producido un error' + valores)
