@@ -282,7 +282,9 @@ def actualizar_inquilino():
 
     return redirect("/inquilino")
 
-    # ------------------------------------------------------ impuestos-------------------------------------------------------------------- @app.route('/guardar_inquilino')
+    # -------------------------------------- impuestos------------------------------------------------
+   
+    #  @app.route('/guardar_inquilino')
 
 
 @app.route("/guardar_impuesto")
@@ -430,7 +432,8 @@ def actualizar_contrato():
         return redirect("/contrato")
 
 
-# ----------------------------------------recibo_alquiler inquilino----------------------------------------------------------
+# --------------------------------recibo_alquiler inquilino------------------------------------------
+
 @app.route("/recibo_inquilinos1", methods=["POST", "GET"])
 def recibo():
 
@@ -451,6 +454,7 @@ def recibo_inquilino(id, varios):
     mensaje= recibos_control.locura(id)
     if mensaje == None:
         flash("Debes actulizar el valor del contrato")
+    
 
     id=int(id)
     fecha = None
@@ -573,7 +577,7 @@ def recibo_guardar():
             
    
             return redirect(url_for("recibo"))
-# ---------------------------------------------------- escritos inquilinos -----------------------------------------
+# ---------------------------------------------------- escritos inquilinos --------------------------------------
 
 @ app.route ('/ver_recibo_inquilinos')
  
@@ -845,7 +849,8 @@ def recibo_escrito_prop(ids):
     
     return render_template ("escrito_prop.html", Escrito=flat_list1, Letras=letras, Fecha=fecha1, Mes=mes, 
                             Ultimo_dia=ultimo_dia, Formato=formato_ultimo_dia_mes,Anos=anos)
-
+    
+    
        
 if __name__ == "__main__":
 

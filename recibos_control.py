@@ -439,3 +439,11 @@ def dif_mes(id):
     
      except ValueError:
        print("Error")
+
+def mensaje_contrat_vacio(id):
+    conec_sql.connection().cursor()
+    with conec_sql.connection().cursor() as cursor:
+            cursor.execute("")
+
+    return 
+    
