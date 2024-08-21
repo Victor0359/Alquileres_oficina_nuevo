@@ -17,12 +17,9 @@
         <div class="form-row align-items-center">
           <div class="col-auto my-1">
             <label class="mr-sm-2" for="inlineFormCustomSelect">Propiedad</label>
-            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="list">
-              <option>Campo requerido</option>
-              {% for prop in Propiedades %}
-                <option value="{{ prop[0] }}">{{ prop[1] }}</option>
-              {% endfor %}
-            </select>
+            <label class="mr-sm-2" for="abl">Propiedad</label>
+            <input type="text" value="" class="form-control" name="list" id="list" aria-describedby="helpId" placeholder="propiedad" />
+            
         <button type="submit" class="btn btn-primary btn-lg" placeholder="Seleccione Propiedad"> BUSCAR
 
           </div>

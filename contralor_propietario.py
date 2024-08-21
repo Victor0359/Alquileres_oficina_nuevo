@@ -4,9 +4,10 @@ def Num_recibo():
     try:
         cursor=conec_sql.connection().cursor()
         with conec_sql.connection().cursor() as cursor:
-            cursor.execute("SELECT max(num_recibo) FROM Recibo_propietario")
-           
+            cursor.execute("SELECT * FROM propietarios")
+                     
             numero = cursor.fetchone()
+            print(numero)
         while numero != None:
                 numero[0]
                 recibo = int(numero[0]) + 1

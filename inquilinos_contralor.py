@@ -1,49 +1,76 @@
 import conec_sql 
+import mariadb 
+import sys
 
 
 def select_inquilino_por_dni(dni):
      conec_sql.connection().cursor()
      with conec_sql.connection().cursor() as cursor:
-         cursor.execute("select id_Inquilinos from Inquilinos where DNI=(?);",(dni),)
+         cursor.execute("select id_inqiilinos from inquilinos where dni=(%s);",(dni,),)
          dni= cursor.fetchone()
          return dni
 
 
 
-def insertar_inquilino(nombre, apellido, dni, cuit,direccion,telefono,celular,correo_electronico,fecha):
+def insertar_inquilino(nombre, apellido, dni, cuit,direccion,telefono,celular,correo_elec):
      
-     conec_sql.connection().cursor()
-   
-     with conec_sql.connection().cursor() as cursor:
-        cursor.execute ("INSERT INTO Inquilinos (Nombre, Apellido, DNI, CUIT, Direccion, Telefono, Celular, Correo_electronico,fecha) VALUES ( (?),(?),(?),(?),(?),(?),(?),(?),(?));",
-                        (nombre, apellido, dni, cuit,direccion,telefono,celular,correo_electronico,fecha),)
-        cursor.commit()
-        
+ try:
+        conn = mariadb.connect(
+        user="root",
+        password="victor9530",
+        host="localhost",
+        port=3306,
+        database="alquileres"
+         )
+    
+ except mariadb.Error as e:
+        print(f"Error al conectar a MariaDB: {e}")
+        sys.exit(1)
+  
+ cur = conn.cursor()
+ cur.execute ("INSERT INTO inquilinos (nombre, apellido, dni, cuit ,direccion, telefono, celular,correo_elec) VALUES ( %s,%s,%s,%s,%s,%s,%s,%s);",                        (nombre, apellido, dni, cuit,direccion,telefono,celular,correo_elec,))
+ conn.commit()
+ conn.close() 
          
             
 
 def obtener_inquilino(apellido):
+   
     conec_sql.connection().cursor()
-        
+    obtener=None   
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT * FROM Inquilinos WHERE Apellido LIKE (?) ORDER by Apellido ASC;",
-            ("%" + str(apellido) + "%"),
+            "SELECT * FROM inquilinos WHERE apellido LIKE %s ORDER by apellido ASC;",
+            ('%' + str(apellido) + '%',),
         )
         
-        propietarios = cursor.fetchall()
+    obtener = cursor.fetchone()
+    print (obtener)   
        
-        return propietarios
+    return obtener
 
 
 def eliminar_inquilino(id):
-     conec_sql.connection().cursor()
+     
+ try:
+        conn = mariadb.connect(
+        user="root",
+        password="victor9530",
+        host="localhost",
+        port=3306,
+        database="alquileres"
+         )
     
-     with conec_sql.connection().cursor() as cursor:
-        cursor.execute("DELETE FROM Inquilinos WHERE id_Inquilinos= (?);", (id,))
-        cursor.commit()
-        
-        
+ except mariadb.Error as e:
+        print(f"Error al conectar a MariaDB: {e}")
+        sys.exit(1)
+  
+ cur = conn.cursor()
+    
+ cur.execute("DELETE FROM inquilinos WHERE id_inqiilinos= (%s);", (id,))
+       
+ conn.commit()
+ conn.close()        
 
 
 def obtener_inquilino_por_id(id):
@@ -52,26 +79,40 @@ def obtener_inquilino_por_id(id):
     inquilino = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT id_Inquilinos,Nombre,Apellido,DNI,CUIT,Direccion,Telefono,Celular,Correo_electronico,fecha FROM Inquilinos WHERE id_Inquilinos=(?)",
+            "SELECT id_inqiilinos,nombre,apellido,dni,cuit,direccion,telefono,celular,correo_elec FROM inquilinos WHERE id_inqiilinos=(%s)",
             (id,),
         )
         
-        inquilino = cursor.fetchone()
-        
+        inquilino = cursor.fetchall()
+        print(inquilino)
         
            
         return inquilino
 
 
-def actualizar_inquilino (nombre, apellido, dni, cuit,direccion,telefono,celular,correo_eletronico,id):
+def actualizar_inquilino (nombre, apellido, dni, cuit,direccion,telefono,celular, correo_elec,id):
 
-      conec_sql.connection().cursor()
-      with conec_sql.connection().cursor() as cursor:
-        cursor.execute(
-            "UPDATE Inquilinos SET Nombre=(?),Apellido=(?),DNI=(?),CUIT=(?),Direccion=(?), Telefono=(?),Celular=(?),Correo_electronico=(?) WHERE id_Inquilinos = (?); ",
+ try:
+        conn = mariadb.connect(
+        user="root",
+        password="victor9530",
+        host="localhost",
+        port=3306,
+        database="alquileres"
+         )
+    
+ except mariadb.Error as e:
+        print(f"Error al conectar a MariaDB: {e}")
+        sys.exit(1)
+  
+ cur = conn.cursor()
+ cur.execute(
+            "UPDATE inquilinos SET nombre=(%s),apellido=(%s),dni=(%s),cuit=(%s),direccion=(%s), telefono=(%s),celular=(%s),correo_elec(%s%) WHERE id_inqiilinos = (%s); ",
             (
-                nombre, apellido, dni, cuit,direccion,telefono,celular,correo_eletronico,id
+                nombre, apellido, dni, cuit,direccion,telefono,celular, correo_elec,id
             ),
         )
-        cursor.commit()
+      
+ conn.commit()
+ conn.close()
        

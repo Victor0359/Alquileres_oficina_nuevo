@@ -1,15 +1,20 @@
-import pyodbc
+import mariadb
+import sys
 
 def connection():
 
+    
     try:   
-       connSqlServer = pyodbc.connect(driver='{ODBC Driver 17 for SQL server}',
-                               server='alquileres.mssql.somee.com',
-                               database='alquileres',
-                               uid='mrnct_SQLLogin_1',
-                               pwd='81x55n8d5y')
+       conn = mariadb.connect(
+            user="root",
+            password="victor9530",
+            host="localhost",
+            database="alquileres"
+            )
        
-    except:
-        print ('coneccion cerrada')
-   
-    return connSqlServer  
+    except mariadb.Error as e:
+        print(f"Error al conectar a MariaDB: {e}")
+        sys.exist(1)
+    
+    return conn
+

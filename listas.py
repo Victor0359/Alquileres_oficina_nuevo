@@ -6,7 +6,7 @@ def lista_propietarios():
     cursor = conec_sql.connection().cursor
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT id_Propietario,concat(Apellido,' ',Nombre) FROM Propietarios order by Apellido "
+            "SELECT id_propietarios,concat(apellido,' ',nombre) FROM propietarios order by apellido "
         )
         propietarios = cursor.fetchall()
         print(propietarios)
@@ -17,9 +17,9 @@ def lista_propietarios_por_propiedad(id):
     cursor = conec_sql.connection().cursor
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "select prop.Id_Propietario, concat(Apellido, ' ', Nombre) as nombre\
-            from Propietarios  as prop inner join Propiedades as P on\
-            P.propietario= prop.Id_Propietario where P.Id_Propiedades=(?)",
+            "select prop.id_propietarios, concat(apellido, ' ', nombre) as nombre\
+            from propietarios  as prop inner join propiedades as P on\
+            P.propietarios= prop.id_propietarios where P.id_propiedades=(?)",
             (id,),
         )
 
@@ -33,7 +33,7 @@ def lista_propiedades():
     propiedades = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT id_propiedades, Dirección FROM Propiedades order by Dirección asc"
+            "SELECT id_propiedades, direccion FROM propiedades_1 order by direccion asc"
         )
 
         propiedades = cursor.fetchall()
@@ -47,7 +47,7 @@ def lista_propiedades_propietario():
     propiedades1 = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT contrato.id_Contratos,prop.Dirección FROM contratos1 as contrato\
+            "SELECT contrato.id_contratos,prop.direccion FROM contratos1 as contrato\
             INNER join propiedades as prop on prop.id_propiedades=contrato.id_Propiedades\
             order by prop.Dirección"
         )
@@ -62,7 +62,7 @@ def lista_propiedades_por_propietario(id):
     propiedad = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT Id_Propiedades,Dirección FROM Propiedades WHERE propietario=(?)",
+            "SELECT id_propiedades,direccion FROM propiedades_1 WHERE propietario=(%s)",
             (id),
         )
 
@@ -76,7 +76,7 @@ def lista_propiedades_por_propiedad(id):
     propiedad = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT Id_Propiedades,Dirección FROM Propiedades WHERE id_propiedades=(?)",
+            "SELECT id_propiedades,direccion FROM propiedades_1 WHERE id_propiedades=(%s)",
             (id),
         )
 
@@ -89,10 +89,8 @@ def lista_propiedades_por_nombre_propiedad(id):
     propiedad = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT Id_Propiedades,Dirección,localidad, concat(propie.Nombre, '' ,propie.Apellido)\
-             as Propietario FROM Propiedades as pro inner join Propietarios as propie on propie.id_Propietario=\
-             pro.propietario WHERE Dirección like(?)",
-            ("%"+str(id)+"%"),
+            "SELECT im.int_impuestos, pro.direccion, im.abl, im.aysa, im.exp_comunes, im.exp_extraordinarias, im.seguro, im.fecha FROM impuestos as im INNER join propiedades_1 as pro on im.id_propiedades=pro.id_propiedades WHERE pro.direccion like '(%s)';",
+            ("%" + str(propiedad) + "%"),
         )
 
         propiedad = cursor.fetchall()
@@ -105,7 +103,7 @@ def lista_inquilinos():
     inquilinos = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT id_Inquilinos, concat(Apellido,' ',Nombre) FROM Inquilinos order by Apellido asc"
+            "SELECT id_inquilinos, concat(apellido,' ',nombre) FROM inquilinos order by apellido asc"
         )
         inquilinos = cursor.fetchall()
 
@@ -145,7 +143,7 @@ def lista_inquilinos1(id):
     inquilinos = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT id_Inquilinos, concat(Apellido,' ',Nombre) FROM Inquilinos where id_Inquilinos= (?)",
+            "SELECT id_inquilinos, concat(apellido,' ',nombre) FROM inquilinos where id_inquilinos= (?)",
             (id),
         )
 
@@ -158,7 +156,7 @@ def lista_buscar_propietarios():
     cursor = conec_sql.connection().cursor()
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT Id_Propietario,concat(Nombre,' ',Apellido) as propietario FROM Propietarios where Apellido like (?)",
+            "SELECT id_propietarios,concat(nombre,' ',apellido) as propietario FROM propietarios where apellido like (%s)",
             ("%" + str(id) + "%"),
         ),
 
