@@ -207,23 +207,21 @@ def actualizar_propietario():
     return redirect("/propietario")
 
 
-# ---------------------------------------------------------inquilinos------------------------------------------------------------
+# ---------------------------------------------------------inquilinos-----------------------------------
 
-@app.route("/inquilino")
-def inquilino():
-    apellido = request.args.get("list")
-    inquilino = inquilinos_contralor.obtener_inquilino(apellido)
-    
-    print(apellido)
-    
-    return render_template("inquilino.html", Inquilino=inquilino)
-    
+@app.route("/inquilinos")
+def inquilinos(apellido):
+     apellido=None
+     apellido = request.args.get("apellido") 
+     inquilinos=inquilinos_contralor.obtener_inquilino(apellido)
 
-@app.route("/guardar_inquilino")
-def guardar_inq():
-   return render_template("guardar_inquilino.html")
+     return render_template("inquilinos.html", Inq=inquilinos)
 
-@app.route("/guardar_inquilino", methods=["POST"])
+@app.route("/guardar_inquilinos")
+def guard():     
+     return render_template("guardar_inquilino.html")
+
+@app.route("/guardar_inquilinos", methods=["POST"])
 def guardar_inquilino():
     error=None
     nombre = request.form["nombre"].title()
@@ -231,16 +229,17 @@ def guardar_inquilino():
     dni = request.form["dni"]
     cuit = request.form["cuit"].title()
     direccion = request.form["direccion"].title()
+    correo_electronico = request.form["correo_electronico"]
     telefono = request.form["telefono"]
     celular = request.form["celular"]
-    correo_electronico = request.form["correo_electronico"]
+    
     #fecha = request.form["fecha"]
     #fecha_dt = datetime.datetime.strptime(fecha, "%Y-%m-%d")
     
    
     dni1=inquilinos_contralor.select_inquilino_por_dni(dni)
      
-    if  (dni1!= None):
+    if  (dni1 != None):
         flash('hay un Inquilino registrado!!')
     else:
         inquilinos_contralor.insertar_inquilino(
@@ -252,53 +251,55 @@ def guardar_inquilino():
         telefono,
         celular,
         correo_electronico
-        
+       
         #fecha
         )
-    return redirect(url_for('guardar_inquilino', error=error))
+        return redirect (url_for("guardar_inquilino", error=error))
 
 @app.route("/eliminar_inquilino/<int:id>")
 def eliminar_inquilino(id):
-    propietario=inquilinos_contralor.eliminar_inquilino(id)
-    return redirect("/inquilino")
+   
+    return redirect("/inquilinos")
 
 
 @app.route("/editar_inquilino/<int:id>")
 def editar_inquilino(id):
+    
     inquilino = inquilinos_contralor.obtener_inquilino_por_id(id)
+  
     return render_template("editar_inquilino.html",Inquilino=inquilino)
 
-@app.route("/actualizar_inquilino/int:id>", methods=["POST"])
+
+@app.route("/actualizar_inquilino", methods=["POST"])
 def actualizar_inquilino():
-    id = int(request.form["id"])
+       
     nombre = request.form["nombre"].title()
     apellido = request.form["apellido"].title()
     dni = request.form["dni"]
     cuit = request.form["cuit"]
     domicilio = request.form["direccion"].title()
-    correo_elect = request.form["correo_electronico"]
     te = request.form["telefono"]
     celular = request.form["celular"]
-    
-    inquilinos_contralor.actualizar_inquilino(
-        
-        
+    correo_elec = request.form["correo_electronico"]
+    id = int(request.form["id"])
+    inquilinos_contralor.actualizar_inquilino(        
+       
         nombre,
         apellido,
         dni,
         cuit,
-        correo_elect,
+        domicilio,
         te,
         celular,
-        domicilio, 
+        correo_elec,
         id    
-    )
+        )
+   
+    return redirect("/inquilinos")
 
-    return redirect("/inquilino")
 
     # -------------------------------------- impuestos------------------------------------------------
    
-    #  @app.route('/guardar_inquilino')
 
 
 @app.route("/guardar_impuesto")
