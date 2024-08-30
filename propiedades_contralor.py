@@ -3,7 +3,7 @@ import conec_sql
 import mariadb
 import sys
 
-def insertar_propiedad(direccion, localidad, propietario,fecha):
+def insertar_propiedad(direccion, localidad, propietario):
     try:
         conn = mariadb.connect(
         user="root",

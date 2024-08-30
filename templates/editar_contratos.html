@@ -11,7 +11,13 @@
           <form action="{{ url_for('actualizar_contrato') }}" method="post">
             
             <input type="hidden" name="id" value="{{ Contratos[0] }}" />
+          
+            <div class= "mb-3">
             
+              <label for="propietario">id_contratos</label>
+               <input value="{{Contratos[0]}}" required type="text" class="input" placeholder="Propietario" id="propietario" name="id_contratos" />
+              </div>
+
           <div class= "mb-3">
             
             <label for="propietario">PROPIETARIO</label>
@@ -37,32 +43,14 @@
               </div>  
             <div class= "mb-3">
             <label for="precio_ini">PRECIO_INI</label>
-           <input value="{{Contratos[7] }}" required type="text" class="input" placeholder="Precio_ini" id="precio_ini" name="precio_ini" />
+           <input value="{{Contratos[7] }}" required type="text" class="input"        placeholder="Precio_ini" id="precio_ini" name="precio_ini" />
              </div> 
-           <div class= "mb-3">
-            
-            <label for="precio_6">PRECIO_6MESES</label>
-            <input value="{{Contratos[8] }}" required type="text" class="input" placeholder="Precio_6" id="precio_6" name="precio_6" /><label for="precio_12">
-            </div>
-            <div class= "mb-3">
            
-            <label for="precio_6">PRECIO_12MESES</label>
-            <input value="{{Contratos[9] }}" required type="text" class="input" placeholder="Precio_12" id="precio_12" name="precio_12" />
-            </div>
-            <div class= "mb-3">
-                <label for="precio_18">PRECIO_18MESES</label>
-            <input value="{{Contratos[10] }}" required type="text" class="input" placeholder="Precio_18" id="precio_18" name="precio_18" />
-            </div>
-            <div class= "mb-3">
+             <div class= "mb-3">
+              <label for="precio_ini">PRECIO_ACTUAL</label>
+             <input value="{{Contratos[7] }}" required type="text" class="input" placeholder="Precio_actual" id="precio_ini" name="precio_actual" />
+               </div> 
             
-            <label for="precio_24">PRECIO_24</label>
-            <input value="{{Contratos[11] }}" required type="text" class="input" placeholder="Precio_24" id="precio_24" name="precio_24" />
-            </div>
-            <div class= "mb-3">
-           
-            <label for="precio_30">PRECIO_30</label>
-            <input value="{{Contratos[12] }}" required type="text" class="input" placeholder="Precio_30" id="precio_30" name="precio_30" />
-            </div>
             <div class= "mb-3">
             <label for="honorarios">HONORARIOS</label>
             <input value="{{Contratos[13] }}" required type="text" class="input" placeholder="honorarios" id="honorarios" name="honorarios" />

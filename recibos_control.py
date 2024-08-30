@@ -49,7 +49,7 @@ def Cuotas(id):
         cursor = conec_sql.connection().cursor()
         with conec_sql.connection().cursor() as cursor:
             cursor.execute(
-                "select datediff(m,Fecha_inicio,GETDATE()) from contratos1 where id_Inquilinos=(?)",
+                "select datediff(m,Fecha_inicio,GETDATE()) from contratos where id_inquilinos=(?)",
                 (id,),
             )
             cuota = cursor.fetchone()
@@ -61,7 +61,7 @@ def Cuota_propietario(id):
         cursor = conec_sql.connection().cursor()
         with conec_sql.connection().cursor() as cursor:
             cursor.execute(
-                "select datediff(m,Fecha_inicio,GETDATE()) from contratos1 where id_Propiedades=(?)",
+                "select datediff(m,fecha_inicio,GETDATE()) from contratos where id_propiedades=%s",
                 (id,),
             )
             
@@ -77,8 +77,8 @@ def Servicios(id):
             cursor.execute(
                 "SELECT Top(1) impuestos.abl,impuestos.aysa, impuestos.exp_comunes,\
                 impuestos.exp_extraordinarias,impuestos.seguros FROM Impuestos as\
-                impuestos INNER JOIN contratos1 as contratos on contratos.id_Propiedades\
-                =impuestos.id_Propiedades where contratos.id_Inquilinos=(?) group by\
+                impuestos INNER JOIN contratos as contratos on contratos.id_propiedades\
+                =impuestos.id_propiedades where contratos.id_inquilinos=(?) group by\
                 impuestos.abl,impuestos.aysa, impuestos.exp_comunes,impuestos.exp_extraordinarias\
                 ,impuestos.seguros,impuestos.fecha Order By impuestos.fecha desc",(id,),)
            
@@ -88,8 +88,7 @@ def Servicios(id):
         
         with conec_sql.connection().cursor() as cursor2:
             cursor2.execute(
-                "select mes_contrat FROM Recibo_Inquilino where id_inquilino= (?) and fecha=(select Max(fecha)\
-                from Recibo_Inquilino where id_inquilino= (?))",
+                "select mes_contrat FROM Recibo_Inquilino where id_inquilino= (%s) and fecha=(select Max(fecha) from recibo_inquilino where id_inquilino= (%s))",
                 (
                     id,
                     id,
@@ -142,8 +141,7 @@ def direccion(id):
         cursor = conec_sql.connection().cursor()
         with conec_sql.connection().cursor() as cursor: 
             cursor.execute(
-                "SELECT propiedades.Id_Propiedades, concat(propiedades.Dirección,' ',propiedades.Localidad) as direccion FROM Contratos1 as contratos inner join Propiedades as propiedades\
-                      on contratos.id_Propiedades=propiedades.Id_Propiedades where contratos.id_Inquilinos=(?)",
+                "SELECT propiedades.id_propiedades, concat(propiedades.dirección,' ',propiedades.localidad) as direccion FROM Contratos as contratos inner join propiedades as propiedades on contratos.id_propiedades=propiedades.id_propiedades where contratos.id_inquilinos=(%s)",
                 (id,),
             )
             direccion1=[]
@@ -160,7 +158,7 @@ def direccion_propietario(id):
         cursor = conec_sql.connection().cursor()
         with conec_sql.connection().cursor()  as cursor:
             cursor.execute(
-                "SELECT propiedades.id_propiedades, concat(propiedades.Dirección,' ',propiedades.Localidad) FROM Contratos as contratos inner join Propiedades as propiedades on contratos.id_Propiedades=propiedades.Id_Propiedades where contratos.id_Propietarios=(?)",
+                "SELECT propiedades.id_propiedades, concat(propiedades.dirección,' ',propiedades.localidad) FROM contratos as contratos inner join propiedades as propiedades on contratos.id_propiedades=propiedades.id_propiedades where contratos.id_propietarios=(%s)",
                 (id,),
             )
             direccion = cursor.fetchall()
@@ -246,8 +244,7 @@ def locura(id):
         cursor = conec_sql.connection().cursor()
         with conec_sql.connection().cursor() as cursor:
             cursor.execute(
-                "SELECT Precio_Inicial,Precio_6Meses,Precio_12Meses,Precio_18Meses,Precio_24Meses,\
-                    Precio_30Meses FROM Contratos1 where id_inquilinos=(?)",
+                "SELECT Precio_Inicial,Precio_actual FROM Contratos where id_inquilinos=(%s)",
                 (id,)
             )
             valores = cursor.fetchall()
@@ -255,8 +252,7 @@ def locura(id):
         cursor1 = conec_sql.connection().cursor()
         with conec_sql.connection().cursor() as cursor1:   
             cursor1.execute(
-                "SELECT mes_contrat FROM Recibo_Inquilino WHERE id_Inquilino=(?)\
-                    and fecha=(select max(fecha) from Recibo_Inquilino where id_Inquilino=(?));",
+                "SELECT mes_contrato FROM recibo_inquilino WHERE id_inquilino=(%s) and fecha_rec=(select max(fecha_rec) from recibo_inquilino where id_inquilino=%s);",
                 (id, id,),
              )
             cuota_recibo = cursor1.fetchone()
@@ -390,9 +386,8 @@ def guardar_recibo (num_Recibo,id_Inquilino,id_propiedad,fecha,mes_contrat,str_m
         conec_sql.connection().cursor()
         with conec_sql.connection().cursor() as cursor:
             cursor.execute(
-                "INSERT INTO Recibo_Inquilino (num_Recibo,id_Inquilino,id_propiedad,fecha,mes_contrat,str_mes,Meses_Adeudados,abl,\
-                aysa,expensas_comunes,seguros,varios,total, pago, saldo_pen_servicios, saldo_mes_adeudado) values ((?),(?),(?),(?),(?),(?),(?),(?),(?),(?),\
-                        (?),(?),(?),(?),(?),(?))",
+                "INSERT INTO recibo_inquilino (num_recibo,id_inquilino,id_propiedad,fecha,mes_contrato,str_mes,meses_adeudados,abl,\
+                aysa,ex_comunes,seguros,varios,total, pago, saldo_pen_serv, saldo_mes_adeudado) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
                 (num_Recibo,id_Inquilino,id_propiedad,fecha,mes_contrat,str_mes,Meses_Adeudados,abl,\
                 aysa,expensas_comunes,seguros,varios,total, pago, saldo_pen_servicios, saldo_mes_adeudado),
                 )
@@ -431,7 +426,7 @@ def dif_mes(id):
      try:
         cursor = conec_sql.connection().cursor()
         with conec_sql.connection().cursor() as cursor:
-            cursor.execute("SELECT month(max(fecha))as mes FROM Recibo_Inquilino where id_Inquilino=(?) )", (id,))
+            cursor.execute("SELECT month(max(fecha))as mes FROM recibo_inquilino where id_inquilino=%s )", (id,))
             
         rango = cursor.fetchone()
         

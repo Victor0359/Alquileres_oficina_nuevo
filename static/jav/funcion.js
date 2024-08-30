@@ -39,6 +39,25 @@ $(function(){
             }
     });
     });
+	$("#tabla").on('click','#3',function(event){
+		event.preventDefault();
+				
+    Swal.fire ({
+		title: 'Deseas GUARDAR el archivo?',
+		text: "Si !",
+		icon: 'error',
+		iconColor:'green',
+		width:'18em',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Si',
+        preConfirm:()=>{
+	        location.href=event.target.href;
+            }
+    });
+    });
+	
 	});
 	
 		

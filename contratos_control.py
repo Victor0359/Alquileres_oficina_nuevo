@@ -1,18 +1,31 @@
-import conec_sql
+import conec_sql 
+import mariadb 
+import sys
 
 
-def insertar_contrato(id_propietarios, id_inquilinos,id_propiedades, fecha_inicio,duracion_contrato,precio_inicial,precio_6meses,
-                     precio_12meses,precio_18meses, precio_24meses, precio_30meses, honorarios):
-
-    cursor = conec_sql.connection().cursor()
-    with conec_sql.connection().cursor() as cursor:
-        cursor.execute ("INSERT INTO Contratos1 ( id_Propietarios,id_Inquilinos,id_Propiedades, Fecha_Inicio, duracion_contrato, Precio_Inicial, Precio_6Meses, Precio_12Meses,\
-            Precio_18Meses, Precio_24Meses, Precio_30Meses, honorarios) VALUES  ((?)\
-                ,(?),(?),(?),(?),(?),(?),(?),(?),(?),(?),(?))",
-                        (id_propietarios,id_inquilinos,id_propiedades, fecha_inicio, duracion_contrato, precio_inicial, precio_6meses,\
-                            precio_12meses, precio_18meses, precio_24meses, precio_30meses, honorarios))
-        cursor.commit()
-          
+def insertar_contrato(id_propietarios, id_inquilinos,id_propiedades, fecha_inicio,duracion_cont,precio_inicial, precio_actual,honorarios):
+     
+     try:
+        conn = mariadb.connect(
+        user="root",
+        password="victor9530",
+        host="localhost",
+        port=3306,
+        database="alquileres"
+         )
+    
+     except mariadb.Error as e:
+        print(f"Error al conectar a MariaDB: {e}")
+        sys.exit(1)
+  
+     cur = conn.cursor()
+    
+     cur.execute ("INSERT INTO Contratos ( id_propietarios,id_inquilinos,id_propiedades, fecha_Inicio,duracion_cont, precio_inicial, precio_actual, honorarios) VALUES  (%s,%s,%s,%s,%s,%s,%s,%s);",
+               (id_propietarios,id_inquilinos,id_propiedades, fecha_inicio, duracion_cont, precio_inicial,precio_actual, honorarios),)
+    
+     cur.connection.commit()
+     cur.close()
+     conn.close()          
             
 
 def obtener_contrato(contratos):
@@ -20,11 +33,7 @@ def obtener_contrato(contratos):
     cursor=conec_sql.connection().cursor()
     propiedad = None
     with conec_sql.connection().cursor() as cursor:
-        cursor.execute( "SELECT id_Contratos, p.Dirección, concat(propietarios.Apellido,' ',propietarios.Nombre) as propietario, concat(inquilinos.Apellido,' ',inquilinos.Nombre) as inquilino,Fecha_Inicio\
-        , duracion_contrato, Precio_Inicial, Precio_6Meses, Precio_12Meses, Precio_18Meses, Precio_24Meses, Precio_30Meses,honorarios, Fecha_Finalizacion FROM Contratos1 as\
-            con INNER JOIN Propiedades as p on p.Id_Propiedades= con.id_Propiedades INNER JOIN Propietarios on propietarios.Id_Propietario= con.id_Propietarios INNER JOIN Inquilinos on\
-                inquilinos.Id_Inquilinos= con.id_Inquilinos\
-                WHERE con.id_Contratos=(?)", (contratos,))
+        cursor.execute( "SELECT id_contratos, p.direccion, concat(propietarios.apellido,' ',propietarios.nombre) as propietario, concat(inquilinos.apellido,' ',inquilinos.nombre) as inquilino,fecha_inicio, duracion_cont, fecha_fin, precio_inicial, precio_actual, honorarios FROM contratos_v as con INNER JOIN propiedades_1 as p on p.id_propiedades= con.id_propiedades INNER JOIN propietarios on  propietarios.id_propietarios= con.id_propietarios INNER JOIN inquilinos on inquilinos.id_inqiilinos= con.id_inquilinos WHERE con.id_contratos=%s", (contratos,))
         
         propiedad = cursor.fetchall()
         
@@ -33,11 +42,24 @@ def obtener_contrato(contratos):
 
 
 def eliminar_contrato(id):
-
-    cursor=conec_sql.connection().cursor()
-    with conec_sql.connection().cursor() as cursor:
-        cursor.execute("DELETE FROM Contratos1 WHERE id_Contratos=(?)", (id,))
-        cursor.commit()
+    try:
+        conn = mariadb.connect(
+        user="root",
+        password="victor9530",
+        host="localhost",
+        port=3306,
+        database="alquileres"
+         )
+    
+    except mariadb.Error as e:
+        print(f"Error al conectar a MariaDB: {e}")
+        sys.exit(1)
+  
+    cur = conn.cursor()
+    cur.execute("DELETE FROM Contratos WHERE id_contratos=%s", (id,))
+    cur.connection.commit()
+    cur.close()
+    conn.close()
         
 
 
@@ -47,10 +69,8 @@ def obtener_contrato_por_id(id):
     contrato = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT id_Contratos, id_Propietarios, id_Inquilinos,id_Propiedades, Fecha_Inicio,\
-                    duracion_contrato, Fecha_Finalizacion, Precio_Inicial, Precio_6Meses, Precio_12Meses,\
-                    Precio_18Meses, Precio_24Meses, Precio_30Meses, honorarios FROM Contratos1 \
-                    where id_Contratos=(?)",
+            "SELECT id_contratos, id_propietarios, id_inquilinos,id_propiedades, fecha_inicio,       duracion_cont, fecha_fin, precio_inicial, precio_actual, honorarios FROM contratos_v \
+                    where id_contratos=%s",
             (id,),
         )
        
@@ -59,21 +79,30 @@ def obtener_contrato_por_id(id):
         return contrato
 
 
-def actualizar_contrato (id_propietarios, id_inquilinos,id_propiedades, fecha_inicio,duracion_contrato,precio_inicial,
-                         precio_6meses, precio_12meses,precio_18meses, precio_24meses, precio_30meses, honorarios,
-                         id_contratos):
+def actualizar_contrato (id_propietarios, id_inquilinos,id_propiedades, fecha_inicio,duracion_contrato,precio_inicial, precio_final, honorarios, id_contratos):
 
+    try:
+        conn = mariadb.connect(
+        user="root",
+        password="victor9530",
+        host="localhost",
+        port=3306,
+        database="alquileres"
+         )
     
-    cursor=conec_sql.connection().cursor()
-    with conec_sql.connection().cursor() as cursor:
-        cursor.execute(
-            "UPDATE Contratos1 SET id_Propietarios=(?), id_Inquilinos=(?), id_Propiedades=(?),Fecha_Inicio=(?),duracion_contrato=(?),Precio_Inicial=(?),\
-                Precio_6Meses=(?),Precio_12Meses=(?),Precio_18Meses=(?),Precio_24Meses=(?),Precio_30Meses=(?),honorarios=(?)\
-                    WHERE id_Contratos = (?) ",
+    except mariadb.Error as e:
+        print(f"Error al conectar a MariaDB: {e}")
+        sys.exit(1)
+  
+    cur = conn.cursor()
+    
+    cur.execute(
+            "UPDATE contratos SET id_propietarios=%s, id_inquilinos=%s, id_propiedades=%s,fecha_inicio=%s,duracion_cont=%s, precio_inicial=%s, precio_actual=%s, honorarios=%s WHERE id_contratos = %s ",
             (
-               id_propietarios, id_inquilinos,id_propiedades, fecha_inicio,duracion_contrato,precio_inicial,precio_6meses,
-                     precio_12meses,precio_18meses, precio_24meses, precio_30meses, honorarios, id_contratos),
-            )
+               id_propietarios, id_inquilinos,id_propiedades, fecha_inicio,duracion_contrato,precio_inicial, precio_final, honorarios, id_contratos)),
+            
     
-        cursor.commit()
+    cur._connection.commit()
+    cur.close()
+    conn.close()
         

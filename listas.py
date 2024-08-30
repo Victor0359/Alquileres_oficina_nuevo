@@ -9,7 +9,7 @@ def lista_propietarios():
             "SELECT id_propietarios,concat(apellido,' ',nombre) FROM propietarios order by apellido "
         )
         propietarios = cursor.fetchall()
-        print(propietarios)
+       
         return propietarios
 
 
@@ -30,14 +30,14 @@ def lista_propietarios_por_propiedad(id):
 
 def lista_propiedades():
     cursor = conec_sql.connection().cursor()
-    propiedades = None
+   
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
             "SELECT id_propiedades, direccion FROM propiedades_1 order by direccion asc"
         )
 
         propiedades = cursor.fetchall()
-        print(propiedades)
+    
 
         return propiedades
 
@@ -47,13 +47,11 @@ def lista_propiedades_propietario():
     propiedades1 = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT contrato.id_contratos,prop.direccion FROM contratos1 as contrato\
-            INNER join propiedades as prop on prop.id_propiedades=contrato.id_Propiedades\
-            order by prop.Dirección"
+            "SELECT contrato.id_contratos,prop.direccion FROM contratos as contrato INNER join propiedades_1 as prop on prop.id_propiedades=contrato.id_propiedades order by prop.direccion"
         )
 
         propiedades1 = cursor.fetchall()
-        print(propiedades1)
+        
         return propiedades1
 
 
@@ -103,7 +101,7 @@ def lista_inquilinos():
     inquilinos = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT id_inquilinos, concat(apellido,' ',nombre) FROM inquilinos order by apellido asc"
+            "SELECT id_inqiilinos, concat(apellido,' ',nombre) FROM inquilinos order by apellido asc"
         )
         inquilinos = cursor.fetchall()
 
@@ -130,8 +128,7 @@ def lista_inquilinos_contratos():
     inquilinos = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT con.id_Inquilinos, concat(inq.Apellido,' ',inq.Nombre) FROM Contratos1 as con inner\
-                join Inquilinos as inq on inq.id_Inquilinos=con.id_Inquilinos order by Apellido asc"
+            "SELECT con.id_inquilinos, concat(inq.apellido,' ',inq.nombre) FROM contratos_v as con inner join inquilinos as inq on inq.id_inqiilinos=con.id_inquilinos order by apellido asc"
         )
         inquilinos = cursor.fetchall()
 
@@ -167,3 +164,17 @@ def lista_buscar_propietarios():
             propietarios.append(dict(zip(columnNames, record)))
 
         return propietarios
+    
+def lista_buscar_propiedad(prop):
+    cursor = conec_sql.connection().cursor()
+    with conec_sql.connection().cursor() as cursor:
+        cursor.execute(
+            "SELECT id_propiedades FROM propiedades_1 where direccion=%s",
+            (prop,),
+        ),
+
+
+        propiedad = cursor.fetchall()
+        cursor.close()
+
+        return propiedad

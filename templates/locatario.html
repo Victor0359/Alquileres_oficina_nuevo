@@ -1,32 +1,20 @@
 {% extends 'principal.html' %}
-      {% block titulo %}
-      inquilino
-      {% endblock %}
-    {% block contenido %}
-
-    
+{% block titulo %}
+inquilinos
+{% endblock %}
+{% block contenido %}
+   
   <div class="container">
     <br />
     <br />
     <br />
-  <!--<a href="guardar_inquilino" class="btn btn-warning titulos ">Cargar Inquilinos</a>-->
+    <a href="{{url_for('guardar_inquilino') }}" class="btn btn-warning titulos ">Cargar Inquilinos</a>
     <br />
     <br />
-     <form  action="{{url_for ('inquilinos') }}" >
-    <div class="mb-3">
-        
-      <div class="form-row align-items-center">
-        <div class="col-auto my-1">
-          <label class="mr-sm-2" for="inlineFormCustomSelect">Propiedad</label>
-          <label class="mr-sm-2" for="abl">Propiedad</label>
-          <input type="text" value="" class="form-control" name="list" id="list" aria-describedby="helpId" placeholder="propiedad" />
-          
-      <button type="submit" class="btn btn-primary btn-lg" placeholder="Seleccione Propiedad"> BUSCAR
-
-        </div>
-      </div>
-    </div>
-  </form>
+    <form action="{{url_for ('inquilinos') }}" >
+      <input type="text"- name="apellido" id="apellido" placeholder="Apellido" />
+      <button class="btn btn-warning" >Buscar por apellido</button>
+    </form>
     <br />
     <br />
     <div class="table table-striped d-sm-block">
@@ -63,26 +51,27 @@
              
               
               <td id ="1">
-                <a href="{{ url_for('editar_inquilino', id = prop[0]) }}" class="btn btn-primary btn-lg" id="" > Editar </a>
+                <a href="{{ url_for('editar_inquilino', id=prop[0]) }}" class="btn btn-primary btn-lg" id="" > Editar </a>
               </td>
               <td id="2">
-              <a href="{{ url_for('eliminar_inquilino', id = prop[0]) }}" class="btn btn-danger btn-lg" id="" > Eliminar </a>
+              <a href="{{ url_for('eliminar_inquilino', id=prop[0]) }}" class="btn btn-danger btn-lg" id="" > Eliminar </a>
               </td>
             </tr>
           {% endfor %}
      
         </tbody>
       </table>
-    
     </div>
+    
   </div> 
   
-{% endblock %}
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+  
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
   <script src ="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="static\jav\funcion.js"></script> 
-<!--script src="static\jav\funcion1.js"></script-->
+  <!--<script src="static\jav\funcion.js"></script> 
+script src="static\jav\funcion1.js"></script-->
    
   
   
-
+{% endblock %}

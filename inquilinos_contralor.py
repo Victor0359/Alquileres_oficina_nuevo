@@ -6,8 +6,10 @@ import sys
 def select_inquilino_por_dni(dni):
      conec_sql.connection().cursor()
      with conec_sql.connection().cursor() as cursor:
-         cursor.execute("select id_inqiilinos from inquilinos where dni=(%s);",(dni,),)
+         cursor.execute("select id_inqiilinos from inquilinos where dni=%s;",(dni,),)
          dni= cursor.fetchone()
+         cursor.close()
+         print(dni)
          return dni
 
 
@@ -37,15 +39,16 @@ def insertar_inquilino(nombre, apellido, dni, cuit,direccion,telefono,celular,co
 def obtener_inquilino(apellido):
    
     conec_sql.connection().cursor()
-    obtener=None   
+
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
             "SELECT * FROM inquilinos WHERE apellido LIKE %s ORDER by apellido ASC;",
-            ('%' + str(apellido) + '%',),
+            ("%" + str(apellido) + "%",),
         )
         
-    obtener = cursor.fetchone()
-    print (obtener)   
+        obtener = cursor.fetchall()
+        cursor.close()
+           
        
     return obtener
 
@@ -67,7 +70,7 @@ def eliminar_inquilino(id):
   
  cur = conn.cursor()
     
- cur.execute("DELETE FROM inquilinos WHERE id_inqiilinos= (%s);", (id,))
+ cur.execute("DELETE FROM inquilinos WHERE id_inqiilinos= %s;", (id,))
        
  conn.commit()
  conn.close()        
@@ -79,12 +82,12 @@ def obtener_inquilino_por_id(id):
     inquilino = None
     with conec_sql.connection().cursor() as cursor:
         cursor.execute(
-            "SELECT id_inqiilinos,nombre,apellido,dni,cuit,direccion,telefono,celular,correo_elec FROM inquilinos WHERE id_inqiilinos=(%s)",
+            "SELECT id_inqiilinos,nombre,apellido,dni,cuit,direccion,telefono,celular,correo_elec FROM inquilinos WHERE id_inqiilinos=%s;",
             (id,),
         )
         
-        inquilino = cursor.fetchall()
-        print(inquilino)
+        inquilino = cursor.fetchone()
+        
         
            
         return inquilino
@@ -107,7 +110,7 @@ def actualizar_inquilino (nombre, apellido, dni, cuit,direccion,telefono,celular
   
  cur = conn.cursor()
  cur.execute(
-            "UPDATE inquilinos SET nombre=(%s),apellido=(%s),dni=(%s),cuit=(%s),direccion=(%s), telefono=(%s),celular=(%s),correo_elec(%s%) WHERE id_inqiilinos = (%s); ",
+            "UPDATE inquilinos SET nombre=%s,apellido=%s,dni=%s,cuit=%s,direccion=%s, telefono=%s,celular=%s,correo_elec=%s WHERE id_inqiilinos = %s; ",
             (
                 nombre, apellido, dni, cuit,direccion,telefono,celular, correo_elec,id
             ),

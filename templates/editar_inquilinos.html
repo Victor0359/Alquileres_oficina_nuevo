@@ -1,0 +1,70 @@
+{% extends 'principal.html' %}
+{% block titulo %}
+  editar inquilinos
+{% endblock %}
+{% block contenido %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>    
+<main>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <br />
+          <div class="card">
+            <div class="card-header titulos text-center"> INQUILINOS</div>
+            <div class="card-body">
+              <form action="{{ url_for('actualizar_inquilino') }}" method="post">
+                  <div class="mb-3">
+                    <input type="hidden" name="id" value="{{ Inquilino[0] }}" />
+                   
+                  </div>
+                <div class="mb-3">
+                  <label for="nombre">NOMBRE</label>
+                  <input value="{{ Inquilino[1] }}" required type="text" class="input" name="nombre" placeholder="nombre" id="nombre" />
+                </div>
+                <div class="mb-3">
+                  <label for="apellido">APELLIDO</label>
+                  <input value="{{ Inquilino[2] }}" required type="text" class="input" name="apellido" placeholder="apellido" id="apellido" />
+                </div>
+                <div class="mb-3">
+                  <label for="dni" class="form-label">DNI</for=>
+                  <input value="{{ Inquilino[3] }}" required type="text" class="input" name="dni" placeholder="dni" id="dni" />
+                </div>
+                <div class="mb-3">
+                  <label for="cuit" class="form-label">CUIT</label>
+                  <input value="{{ Inquilino[4] }}" required type="text" class="input" name="cuit" placeholder="cuit" id="cuit" />
+                </div>
+                <div class="mb-3">
+                  <label for="direccion" class="form-label">DIRECCION</label>
+                  <input value="{{ Inquilino[5] }}" required type="text" class="input" name="direccion" placeholder="direccion" id="direccion" />
+                </div>
+                <div class="mb-3">
+                  <label for="telefono" class="form-label">TELEFONO</label>
+                  <input value="{{ Inquilino[6] }}" required type="text" class="input" name="telefono" placeholder="telefono" id="telefono" />
+                </div>
+                <div class="mb-3">
+                  <label for="celular" class="form-label">CELULAR</label>
+                  <input value="{{ Inquilino[7] }}" required type="text" class="input" name="celular" placeholder="celular" id="celular" />
+                </div>
+                <div class="mb-3"> 
+                  <label for="correo_electronico" class="form-label">CORREO ELECTRONICO</label>
+                  <input value="{{ Inquilino[8] }}" required type="text" class="input" name="correo_electronico" placeholder="correo_electronico" id="correo_electronico" />
+                </div>
+                
+           
+                 <button class="btn btn-primary" type="submit">ENTRAR</button>
+              
+              </form>
+              <br>
+                         
+              </div>
+            
+        </div>
+      </div> 
+    </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    </div>
+   
+  </main>
+    {% endblock %}
